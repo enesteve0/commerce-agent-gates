@@ -1,0 +1,11 @@
+{
+  "name": "commerce-agent-gates",
+  "version": "1.0.0",
+  "description": "Three build checks that encode mistakes coding agents make and careful humans don't.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node test.mjs"
+  }
+}
