@@ -7,9 +7,8 @@ export const GET = withSession(async (session) =>
 
 export const POST = withSession(async (session, request) => {
   const body = await request.json();
-  const order = await db.order.update({
-    where: { id: body.id, tenantId: session.tenantId },
-    data: { status: body.status },
+  const order = await db.order.create({
+    data: { externalId: body.externalId, status: "draft", tenantId: session.tenantId },
   });
   return Response.json(order);
 });
