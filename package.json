@@ -1,11 +1,57 @@
 {
   "name": "commerce-agent-gates",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Three build checks that encode mistakes coding agents make and careful humans don't.",
   "type": "module",
   "license": "MIT",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "commerce-agent-gates": "bin/commerce-agent-gates.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enesteve0/commerce-agent-gates.git"
+  },
+  "homepage": "https://github.com/enesteve0/commerce-agent-gates#readme",
+  "bugs": "https://github.com/enesteve0/commerce-agent-gates/issues",
+  "keywords": [
+    "static-analysis",
+    "lint",
+    "ci",
+    "nextjs",
+    "app-router",
+    "ai-agents",
+    "code-review",
+    "security",
+    "multi-tenant",
+    "bola"
+  ],
   "scripts": {
-    "test": "node test.mjs"
+    "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage",
+    "lint": "eslint .",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "prepublishOnly": "npm run lint && npm run test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.9.0",
+    "prettier": "^3.9.6",
+    "publint": "^0.3.24"
   }
 }
