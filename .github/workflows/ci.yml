@@ -1,0 +1,52 @@
+name: ci
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: lint
+        run: npm run lint
+
+      - name: format
+        run: npm run format
+
+      - name: test
+        run: npm test
+
+      - name: dogfood — the gates gate this repository
+        run: node bin/commerce-agent-gates.mjs .
+
+      - name: package hygiene
+        run: npx publint
+
+      - name: packed-tarball smoke test
+        run: |
+          mkdir -p /tmp/gates-smoke
+          npm pack --pack-destination /tmp/gates-smoke
+          cd /tmp/gates-smoke
+          npm init -y > /dev/null
+          npm install --no-audit --no-fund ./*.tgz > /dev/null
+          npx commerce-agent-gates --list
+          npx commerce-agent-gates --version
+          npx commerce-agent-gates "$GITHUB_WORKSPACE/fixtures/pass"
+          if npx commerce-agent-gates "$GITHUB_WORKSPACE/fixtures/fail"; then
+            echo "smoke failure: the dirty fixture tree passed" >&2
+            exit 1
+          fi

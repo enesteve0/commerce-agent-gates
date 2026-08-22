@@ -1,0 +1,8 @@
+{
+  "checks": {
+    "no-mock-data-in-production": {
+      "flagAuthority": "fixtures/pass/lib/demo-mode.ts"
+    }
+  },
+  "exclude": ["fixtures/fail", "test"]
+}
