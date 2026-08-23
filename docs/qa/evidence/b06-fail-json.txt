@@ -1,0 +1,137 @@
+{
+  "tool": "commerce-agent-gates",
+  "version": "2.0.0",
+  "root": "fixtures/fail",
+  "filesScanned": 10,
+  "notices": [],
+  "findings": [
+    {
+      "ruleId": "mutating-routes-must-be-guarded",
+      "severity": "error",
+      "file": "app/api/billing/route.ts",
+      "line": 4,
+      "column": 1,
+      "message": "DELETE is exported without one of withSession, withApiKey, withServiceToken; wrap the handler so identity is established before the body runs"
+    },
+    {
+      "ruleId": "queries-must-be-tenant-scoped",
+      "severity": "error",
+      "file": "app/api/billing/route.ts",
+      "line": 6,
+      "column": 9,
+      "message": "db.invoice.deleteMany is not scoped to the session tenant"
+    },
+    {
+      "ruleId": "queries-must-be-tenant-scoped",
+      "severity": "error",
+      "file": "app/api/health/route.ts",
+      "line": 3,
+      "column": 63,
+      "message": "db.tenant.count is not scoped to the session tenant"
+    },
+    {
+      "ruleId": "mutating-routes-must-be-guarded",
+      "severity": "error",
+      "file": "app/api/orders/route.ts",
+      "line": 4,
+      "column": 1,
+      "message": "POST is declared as a bare function; use the wrapper form instead (export const POST = withSession(…))"
+    },
+    {
+      "ruleId": "queries-must-be-tenant-scoped",
+      "severity": "error",
+      "file": "app/api/orders/route.ts",
+      "line": 6,
+      "column": 23,
+      "message": "db.order.update is not scoped to the session tenant"
+    },
+    {
+      "ruleId": "mutating-routes-must-be-guarded",
+      "severity": "error",
+      "file": "app/api/webhooks/incoming/route.ts",
+      "line": 4,
+      "column": 1,
+      "message": "POST is declared as a bare function; use the wrapper form instead (export const POST = withSession(…))"
+    },
+    {
+      "ruleId": "no-mock-data-in-production",
+      "severity": "error",
+      "file": "app/api/webhooks/incoming/route.ts",
+      "line": 6,
+      "column": 12,
+      "message": "trusts a demo credential by shape instead of verifying it"
+    },
+    {
+      "ruleId": "queries-must-be-tenant-scoped",
+      "severity": "error",
+      "file": "app/api/webhooks/incoming/route.ts",
+      "line": 8,
+      "column": 9,
+      "message": "db.webhookEvent.create is not scoped to the session tenant"
+    },
+    {
+      "ruleId": "no-mock-data-in-production",
+      "severity": "error",
+      "file": "lib/demo-mode.ts",
+      "line": 1,
+      "column": 1,
+      "message": "lib/demo-mode.ts does not refuse in production (expected a NODE_ENV, VERCEL_ENV, or import.meta.env.PROD guard)"
+    },
+    {
+      "ruleId": "no-mock-data-in-production",
+      "severity": "error",
+      "file": "lib/orders-client.ts",
+      "line": 2,
+      "column": 38,
+      "message": "reads demo flag DEMO_MODE directly; resolve it through lib/demo-mode.ts"
+    },
+    {
+      "ruleId": "no-mock-data-in-production",
+      "severity": "error",
+      "file": "lib/orders-client.ts",
+      "line": 5,
+      "column": 10,
+      "message": "reads demo flag isDemoEnabled directly; resolve it through lib/demo-mode.ts"
+    },
+    {
+      "ruleId": "no-mock-data-in-production",
+      "severity": "error",
+      "file": "lib/orders-client.ts",
+      "line": 8,
+      "column": 10,
+      "message": "reads demo flag isDemoEnabled directly; resolve it through lib/demo-mode.ts"
+    },
+    {
+      "ruleId": "no-mock-data-in-production",
+      "severity": "error",
+      "file": "lib/orders-client.ts",
+      "line": 9,
+      "column": 11,
+      "message": "reads demo flag DEMO_MODE directly; resolve it through lib/demo-mode.ts"
+    },
+    {
+      "ruleId": "no-mock-data-in-production",
+      "severity": "error",
+      "file": "lib/orders-client.ts",
+      "line": 10,
+      "column": 18,
+      "message": "reads demo flag DEMO_MODE directly; resolve it through lib/demo-mode.ts"
+    },
+    {
+      "ruleId": "no-mock-data-in-production",
+      "severity": "error",
+      "file": "lib/orders-client.ts",
+      "line": 10,
+      "column": 37,
+      "message": "trusts a demo credential by shape instead of verifying it"
+    }
+  ],
+  "summary": {
+    "findings": 15,
+    "checks": {
+      "no-mock-data-in-production": 8,
+      "mutating-routes-must-be-guarded": 3,
+      "queries-must-be-tenant-scoped": 4
+    }
+  }
+}

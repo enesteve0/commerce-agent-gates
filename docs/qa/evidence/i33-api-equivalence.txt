@@ -1,0 +1,1 @@
+runGates({root:"fixtures/fail"}) -> 15 findings, 10 files; checksRun: no-mock-data-in-production=8, mutating-routes-must-be-guarded=3, queries-must-be-tenant-scoped=4

@@ -1,0 +1,1 @@
+error: /tmp/opencode/gates-e2e/cfg/commerce-agent-gates.config.json: unknown key "bogusOption" at checks.queries-must-be-tenant-scoped. Expected one of: clients, operations, scopePattern, rawQueries, exemptions

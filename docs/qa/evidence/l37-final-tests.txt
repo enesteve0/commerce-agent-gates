@@ -1,0 +1,777 @@
+
+> commerce-agent-gates@2.0.0 test
+> node --test
+
+TAP version 13
+# Subtest: mutating-routes-must-be-guarded
+    # Subtest: passes wrapped const-form handlers
+    ok 1 - passes wrapped const-form handlers
+      ---
+      duration_ms: 6.622083
+      type: 'test'
+      ...
+    # Subtest: flags a bare exported async function
+    ok 2 - flags a bare exported async function
+      ---
+      duration_ms: 1.200708
+      type: 'test'
+      ...
+    # Subtest: flags unwrapped const-form handlers of every mutating method
+    ok 3 - flags unwrapped const-form handlers of every mutating method
+      ---
+      duration_ms: 0.81275
+      type: 'test'
+      ...
+    # Subtest: respects aliased imports
+    ok 4 - respects aliased imports
+      ---
+      duration_ms: 0.566833
+      type: 'test'
+      ...
+    # Subtest: rejects a locally shadowed guard that is never imported
+    ok 5 - rejects a locally shadowed guard that is never imported
+      ---
+      duration_ms: 0.326125
+      type: 'test'
+      ...
+    # Subtest: recognises namespace-imported guards
+    ok 6 - recognises namespace-imported guards
+      ---
+      duration_ms: 0.361042
+      type: 'test'
+      ...
+    # Subtest: ignores read-only methods entirely
+    ok 7 - ignores read-only methods entirely
+      ---
+      duration_ms: 0.376084
+      type: 'test'
+      ...
+    # Subtest: only inspects App Router route files
+    ok 8 - only inspects App Router route files
+      ---
+      duration_ms: 0.370291
+      type: 'test'
+      ...
+    # Subtest: handles .js route files
+    ok 9 - handles .js route files
+      ---
+      duration_ms: 0.706166
+      type: 'test'
+      ...
+    # Subtest: supports custom guard names via options
+    ok 10 - supports custom guard names via options
+      ---
+      duration_ms: 1.524209
+      type: 'test'
+      ...
+    # Subtest: flags re-exported handlers whose wrapping cannot be verified
+    ok 11 - flags re-exported handlers whose wrapping cannot be verified
+      ---
+      duration_ms: 0.4065
+      type: 'test'
+      ...
+    # Subtest: does not mistake non-mutating re-exports for handlers
+    ok 12 - does not mistake non-mutating re-exports for handlers
+      ---
+      duration_ms: 0.296791
+      type: 'test'
+      ...
+    # Subtest: reports each violation in a multi-route file at its own line
+    ok 13 - reports each violation in a multi-route file at its own line
+      ---
+      duration_ms: 0.655542
+      type: 'test'
+      ...
+    1..13
+ok 1 - mutating-routes-must-be-guarded
+  ---
+  duration_ms: 21.161334
+  type: 'suite'
+  ...
+# Subtest: no-mock-data-in-production
+    # Subtest: passes a tree where only the authority touches the flag
+    ok 1 - passes a tree where only the authority touches the flag
+      ---
+      duration_ms: 20.477458
+      type: 'test'
+      ...
+    # Subtest: fails when the authority module does not exist
+    ok 2 - fails when the authority module does not exist
+      ---
+      duration_ms: 2.844167
+      type: 'test'
+      ...
+    # Subtest: fails when the authority never refuses production
+    ok 3 - fails when the authority never refuses production
+      ---
+      duration_ms: 2.306917
+      type: 'test'
+      ...
+    # Subtest: accepts every legitimate refusal idiom
+    ok 4 - accepts every legitimate refusal idiom
+      ---
+      duration_ms: 2.646583
+      type: 'test'
+      ...
+    # Subtest: flags direct flag reads outside the authority, with position
+    ok 5 - flags direct flag reads outside the authority, with position
+      ---
+      duration_ms: 1.660625
+      type: 'test'
+      ...
+    # Subtest: catches dynamic member access and destructured env reads
+    ok 6 - catches dynamic member access and destructured env reads
+      ---
+      duration_ms: 5.996542
+      type: 'test'
+      ...
+    # Subtest: ignores flag mentions inside comments
+    ok 7 - ignores flag mentions inside comments
+      ---
+      duration_ms: 8.953625
+      type: 'test'
+      ...
+    # Subtest: lets an inline gate-exempt directive carry a written reason
+    ok 8 - lets an inline gate-exempt directive carry a written reason
+      ---
+      duration_ms: 1.804291
+      type: 'test'
+      ...
+    # Subtest: catches prefix trust in every common shape
+    ok 9 - catches prefix trust in every common shape
+      ---
+      duration_ms: 8.017375
+      type: 'test'
+      ...
+    # Subtest: does not confuse ordinary verification with prefix trust
+    ok 10 - does not confuse ordinary verification with prefix trust
+      ---
+      duration_ms: 160.029417
+      type: 'test'
+      ...
+    # Subtest: honours option overrides
+    ok 11 - honours option overrides
+      ---
+      duration_ms: 4.563334
+      type: 'test'
+      ...
+    1..11
+ok 2 - no-mock-data-in-production
+  ---
+  duration_ms: 619.936833
+  type: 'suite'
+  ...
+# Subtest: queries-must-be-tenant-scoped
+    # Subtest: passes session-scoped queries
+    ok 1 - passes session-scoped queries
+      ---
+      duration_ms: 15.104
+      type: 'test'
+      ...
+    # Subtest: passes scoping through nested session objects and optional chaining
+    ok 2 - passes scoping through nested session objects and optional chaining
+      ---
+      duration_ms: 0.799917
+      type: 'test'
+      ...
+    # Subtest: flags a query scoped from the request body — the confused deputy
+    ok 3 - flags a query scoped from the request body — the confused deputy
+      ---
+      duration_ms: 0.460333
+      type: 'test'
+      ...
+    # Subtest: flags findUnique by bare id, the classic BOLA vector
+    ok 4 - flags findUnique by bare id, the classic BOLA vector
+      ---
+      duration_ms: 0.121209
+      type: 'test'
+      ...
+    # Subtest: covers the write verbs including create and upsert
+    ok 5 - covers the write verbs including create and upsert
+      ---
+      duration_ms: 2.259458
+      type: 'test'
+      ...
+    # Subtest: accepts create whose tenant comes from the session
+    ok 6 - accepts create whose tenant comes from the session
+      ---
+      duration_ms: 0.533583
+      type: 'test'
+      ...
+    # Subtest: honours whole-file exemptions that carry a reason
+    ok 7 - honours whole-file exemptions that carry a reason
+      ---
+      duration_ms: 0.413875
+      type: 'test'
+      ...
+    # Subtest: supports inline gate-exempt directives on single lines
+    ok 8 - supports inline gate-exempt directives on single lines
+      ---
+      duration_ms: 1.417417
+      type: 'test'
+      ...
+    # Subtest: stays silent about raw queries unless rawQueries is enabled
+    ok 9 - stays silent about raw queries unless rawQueries is enabled
+      ---
+      duration_ms: 558.103334
+      type: 'test'
+      ...
+    # Subtest: adapts to custom clients, operations, and scope patterns
+    ok 10 - adapts to custom clients, operations, and scope patterns
+      ---
+      duration_ms: 2.387416
+      type: 'test'
+      ...
+    # Subtest: ignores non-route files
+    ok 11 - ignores non-route files
+      ---
+      duration_ms: 0.786667
+      type: 'test'
+      ...
+    # Subtest: rejects an invalid scope pattern as configuration, not a crash
+    ok 12 - rejects an invalid scope pattern as configuration, not a crash
+      ---
+      duration_ms: 0.79375
+      type: 'test'
+      ...
+    1..12
+ok 3 - queries-must-be-tenant-scoped
+  ---
+  duration_ms: 606.628459
+  type: 'suite'
+  ...
+# Subtest: cli
+    # Subtest: exits 0 with pretty output on a clean tree
+    ok 1 - exits 0 with pretty output on a clean tree
+      ---
+      duration_ms: 624.200584
+      type: 'test'
+      ...
+    # Subtest: exits 1 and prints located findings on a dirty tree
+    ok 2 - exits 1 and prints located findings on a dirty tree
+      ---
+      duration_ms: 17.612084
+      type: 'test'
+      ...
+    # Subtest: errors with exit 2 when a directory holds no source files
+    ok 3 - errors with exit 2 when a directory holds no source files
+      ---
+      duration_ms: 12.32375
+      type: 'test'
+      ...
+    # Subtest: allows an explicitly empty scan with --allow-empty
+    ok 4 - allows an explicitly empty scan with --allow-empty
+      ---
+      duration_ms: 13.045583
+      type: 'test'
+      ...
+    # Subtest: explains skipped files when nothing scannable remains
+    ok 5 - explains skipped files when nothing scannable remains
+      ---
+      duration_ms: 21.234667
+      type: 'test'
+      ...
+    # Subtest: surfaces notices on an allowed empty scan without failing
+    ok 6 - surfaces notices on an allowed empty scan without failing
+      ---
+      duration_ms: 278.415792
+      type: 'test'
+      ...
+    # Subtest: emits parseable JSON
+    ok 7 - emits parseable JSON
+      ---
+      duration_ms: 39.8835
+      type: 'test'
+      ...
+    # Subtest: emits SARIF 2.1.0 with rules and positioned results
+    ok 8 - emits SARIF 2.1.0 with rules and positioned results
+      ---
+      duration_ms: 62.532666
+      type: 'test'
+      ...
+    # Subtest: emits GitHub annotation commands
+    ok 9 - emits GitHub annotation commands
+      ---
+      duration_ms: 14.772333
+      type: 'test'
+      ...
+    # Subtest: --only and --skip select checks
+    ok 10 - --only and --skip select checks
+      ---
+      duration_ms: 9.906042
+      type: 'test'
+      ...
+    # Subtest: --list prints check ids
+    ok 11 - --list prints check ids
+      ---
+      duration_ms: 0.214791
+      type: 'test'
+      ...
+    # Subtest: --help prints usage; unknown flags exit 2
+    ok 12 - --help prints usage; unknown flags exit 2
+      ---
+      duration_ms: 0.089875
+      type: 'test'
+      ...
+    # Subtest: --version prints a semver
+    ok 13 - --version prints a semver
+      ---
+      duration_ms: 8.498708
+      type: 'test'
+      ...
+    # Subtest: reports configuration errors as exit 2 without stack traces
+    ok 14 - reports configuration errors as exit 2 without stack traces
+      ---
+      duration_ms: 2.666042
+      type: 'test'
+      ...
+    # Subtest: scans multiple roots and prefixes findings per root
+    ok 15 - scans multiple roots and prefixes findings per root
+      ---
+      duration_ms: 17.507208
+      type: 'test'
+      ...
+    1..15
+ok 4 - cli
+  ---
+  duration_ms: 1167.925375
+  type: 'suite'
+  ...
+# Subtest: loadConfig
+    # Subtest: returns pure defaults when no config file exists
+    ok 1 - returns pure defaults when no config file exists
+      ---
+      duration_ms: 4.6935
+      type: 'test'
+      ...
+    # Subtest: discovers the config file at the scan root
+    ok 2 - discovers the config file at the scan root
+      ---
+      duration_ms: 287.812083
+      type: 'test'
+      ...
+    # Subtest: honours an explicit --config path
+    ok 3 - honours an explicit --config path
+      ---
+      duration_ms: 5.7725
+      type: 'test'
+      ...
+    # Subtest: fails loudly when an explicit config is missing
+    ok 4 - fails loudly when an explicit config is missing
+      ---
+      duration_ms: 6.434875
+      type: 'test'
+      ...
+    # Subtest: reports malformed JSON with the file name
+    ok 5 - reports malformed JSON with the file name
+      ---
+      duration_ms: 35.276334
+      type: 'test'
+      ...
+    # Subtest: rejects non-object documents
+    ok 6 - rejects non-object documents
+      ---
+      duration_ms: 8.740375
+      type: 'test'
+      ...
+    # Subtest: rejects unknown keys with the valid alternatives listed
+    ok 7 - rejects unknown keys with the valid alternatives listed
+      ---
+      duration_ms: 12.337625
+      type: 'test'
+      ...
+    # Subtest: rejects unknown check ids and unknown options
+    ok 8 - rejects unknown check ids and unknown options
+      ---
+      duration_ms: 11.620834
+      type: 'test'
+      ...
+    # Subtest: demands a reason for every exemption entry
+    ok 9 - demands a reason for every exemption entry
+      ---
+      duration_ms: 7.399
+      type: 'test'
+      ...
+    # Subtest: normalises exemption paths to posix-relative form
+    ok 10 - normalises exemption paths to posix-relative form
+      ---
+      duration_ms: 282.088375
+      type: 'test'
+      ...
+    # Subtest: replaces arrays wholesale and validates element types
+    ok 11 - replaces arrays wholesale and validates element types
+      ---
+      duration_ms: 5.761792
+      type: 'test'
+      ...
+    # Subtest: enforces boolean and string option types
+    ok 12 - enforces boolean and string option types
+      ---
+      duration_ms: 6.511
+      type: 'test'
+      ...
+    1..12
+ok 5 - loadConfig
+  ---
+  duration_ms: 812.831167
+  type: 'suite'
+  ...
+# Subtest: fixture contract
+    # Subtest: no-mock-data-in-production passes the clean tree
+    ok 1 - no-mock-data-in-production passes the clean tree
+      ---
+      duration_ms: 11.134333
+      type: 'test'
+      ...
+    # Subtest: no-mock-data-in-production catches every planted mistake in the dirty tree
+    ok 2 - no-mock-data-in-production catches every planted mistake in the dirty tree
+      ---
+      duration_ms: 3.406917
+      type: 'test'
+      ...
+    # Subtest: mutating-routes-must-be-guarded passes the clean tree
+    ok 3 - mutating-routes-must-be-guarded passes the clean tree
+      ---
+      duration_ms: 2.717792
+      type: 'test'
+      ...
+    # Subtest: mutating-routes-must-be-guarded catches every planted mistake in the dirty tree
+    ok 4 - mutating-routes-must-be-guarded catches every planted mistake in the dirty tree
+      ---
+      duration_ms: 1.749666
+      type: 'test'
+      ...
+    # Subtest: queries-must-be-tenant-scoped passes the clean tree
+    ok 5 - queries-must-be-tenant-scoped passes the clean tree
+      ---
+      duration_ms: 1.697708
+      type: 'test'
+      ...
+    # Subtest: queries-must-be-tenant-scoped catches every planted mistake in the dirty tree
+    ok 6 - queries-must-be-tenant-scoped catches every planted mistake in the dirty tree
+      ---
+      duration_ms: 1.179291
+      type: 'test'
+      ...
+    1..6
+ok 6 - fixture contract
+  ---
+  duration_ms: 23.323209
+  type: 'suite'
+  ...
+# Subtest: maskNonCode
+    # Subtest: preserves length and newlines exactly
+    ok 1 - preserves length and newlines exactly
+      ---
+      duration_ms: 2.060125
+      type: 'test'
+      ...
+    # Subtest: masks line comments but keeps code on other lines
+    ok 2 - masks line comments but keeps code on other lines
+      ---
+      duration_ms: 0.880625
+      type: 'test'
+      ...
+    # Subtest: masks multi-line block comments and preserves interior newlines
+    ok 3 - masks multi-line block comments and preserves interior newlines
+      ---
+      duration_ms: 0.630625
+      type: 'test'
+      ...
+    # Subtest: does not corrupt strings that contain block-comment markers
+    ok 4 - does not corrupt strings that contain block-comment markers
+      ---
+      duration_ms: 4.110125
+      type: 'test'
+      ...
+    # Subtest: treats // inside a string as content, not a comment
+    ok 5 - treats // inside a string as content, not a comment
+      ---
+      duration_ms: 0.318375
+      type: 'test'
+      ...
+    # Subtest: handles escaped quotes in strings
+    ok 6 - handles escaped quotes in strings
+      ---
+      duration_ms: 0.347708
+      type: 'test'
+      ...
+    # Subtest: masks template literal text including ${} interpolations' delimiters
+    ok 7 - masks template literal text including ${} interpolations' delimiters
+      ---
+      duration_ms: 5.29675
+      type: 'test'
+      ...
+    # Subtest: supports nested templates inside interpolations
+    ok 8 - supports nested templates inside interpolations
+      ---
+      duration_ms: 0.17475
+      type: 'test'
+      ...
+    # Subtest: classifies regex literals after operators and keywords
+    ok 9 - classifies regex literals after operators and keywords
+      ---
+      duration_ms: 0.344583
+      type: 'test'
+      ...
+    # Subtest: keeps division unmasked so surrounding code stays visible
+    ok 10 - keeps division unmasked so surrounding code stays visible
+      ---
+      duration_ms: 6.583083
+      type: 'test'
+      ...
+    # Subtest: handles character classes containing slashes in regex literals
+    ok 11 - handles character classes containing slashes in regex literals
+      ---
+      duration_ms: 4.952375
+      type: 'test'
+      ...
+    1..11
+ok 7 - maskNonCode
+  ---
+  duration_ms: 38.61975
+  type: 'suite'
+  ...
+# Subtest: matchOutsideComments
+    # Subtest: finds matches in code and skips matches inside comments
+    ok 1 - finds matches in code and skips matches inside comments
+      ---
+      duration_ms: 0.550958
+      type: 'test'
+      ...
+    # Subtest: sees string contents, where interesting literals live
+    ok 2 - sees string contents, where interesting literals live
+      ---
+      duration_ms: 1.011125
+      type: 'test'
+      ...
+    # Subtest: ignores commented-out violations
+    ok 3 - ignores commented-out violations
+      ---
+      duration_ms: 0.140958
+      type: 'test'
+      ...
+    1..3
+ok 8 - matchOutsideComments
+  ---
+  duration_ms: 4.286042
+  type: 'suite'
+  ...
+# Subtest: positionAt
+    # Subtest: returns 1-based line and column
+    ok 1 - returns 1-based line and column
+      ---
+      duration_ms: 1.384083
+      type: 'test'
+      ...
+    # Subtest: clamps out-of-range offsets
+    ok 2 - clamps out-of-range offsets
+      ---
+      duration_ms: 0.150792
+      type: 'test'
+      ...
+    # Subtest: maps offsets found in masked text back to original positions
+    ok 3 - maps offsets found in masked text back to original positions
+      ---
+      duration_ms: 0.134375
+      type: 'test'
+      ...
+    1..3
+ok 9 - positionAt
+  ---
+  duration_ms: 1.81625
+  type: 'suite'
+  ...
+# Subtest: lineHasInlineExemption
+    # Subtest: recognises the directive on the flagged line
+    ok 1 - recognises the directive on the flagged line
+      ---
+      duration_ms: 0.252709
+      type: 'test'
+      ...
+    # Subtest: rejects lines without the directive
+    ok 2 - rejects lines without the directive
+      ---
+      duration_ms: 0.179667
+      type: 'test'
+      ...
+    # Subtest: requires the parenthesis form with a reason slot
+    ok 3 - requires the parenthesis form with a reason slot
+      ---
+      duration_ms: 0.08125
+      type: 'test'
+      ...
+    1..3
+ok 10 - lineHasInlineExemption
+  ---
+  duration_ms: 0.618792
+  type: 'suite'
+  ...
+# Subtest: balancedArgument
+    # Subtest: reads through nested calls and objects
+    ok 1 - reads through nested calls and objects
+      ---
+      duration_ms: 0.14
+      type: 'test'
+      ...
+    # Subtest: returns null when unbalanced
+    ok 2 - returns null when unbalanced
+      ---
+      duration_ms: 0.040541
+      type: 'test'
+      ...
+    1..2
+ok 11 - balancedArgument
+  ---
+  duration_ms: 0.324
+  type: 'suite'
+  ...
+# Subtest: discover
+    # Subtest: finds supported source files and nothing else
+    ok 1 - finds supported source files and nothing else
+      ---
+      duration_ms: 20.519625
+      type: 'test'
+      ...
+    # Subtest: skips ignored directories entirely
+    ok 2 - skips ignored directories entirely
+      ---
+      duration_ms: 9.061375
+      type: 'test'
+      ...
+    # Subtest: returns deterministic sorted order across runs
+    ok 3 - returns deterministic sorted order across runs
+      ---
+      duration_ms: 3.233625
+      type: 'test'
+      ...
+    # Subtest: uses posix separators in relative paths
+    ok 4 - uses posix separators in relative paths
+      ---
+      duration_ms: 10.928458
+      type: 'test'
+      ...
+    # Subtest: honours glob-lite excludes
+    ok 5 - honours glob-lite excludes
+      ---
+      duration_ms: 235.808375
+      type: 'test'
+      ...
+    # Subtest: survives directory symlink cycles via canonical tracking
+    ok 6 - survives directory symlink cycles via canonical tracking
+      ---
+      duration_ms: 6.632875
+      type: 'test'
+      ...
+    # Subtest: follows symlinks to individual files instead of skipping them
+    ok 7 - follows symlinks to individual files instead of skipping them
+      ---
+      duration_ms: 18.626375
+      type: 'test'
+      ...
+    # Subtest: reports broken symlinks as notices without failing
+    ok 8 - reports broken symlinks as notices without failing
+      ---
+      duration_ms: 26.942042
+      type: 'test'
+      ...
+    # Subtest: skips oversized files with an explicit notice
+    ok 9 - skips oversized files with an explicit notice
+      ---
+      duration_ms: 1.354917
+      type: 'test'
+      ...
+    # Subtest: strips a leading BOM from file contents
+    ok 10 - strips a leading BOM from file contents
+      ---
+      duration_ms: 0.800166
+      type: 'test'
+      ...
+    # Subtest: reports an empty tree as empty rather than throwing
+    ok 11 - reports an empty tree as empty rather than throwing
+      ---
+      duration_ms: 0.247292
+      type: 'test'
+      ...
+    1..11
+ok 12 - discover
+  ---
+  duration_ms: 336.659417
+  type: 'suite'
+  ...
+# Subtest: compileExclude
+    # Subtest: generated matches generated/client.ts
+    ok 1 - generated matches generated/client.ts
+      ---
+      duration_ms: 0.115334
+      type: 'test'
+      ...
+    # Subtest: generated rejects src/generated/x.ts
+    ok 2 - generated rejects src/generated/x.ts
+      ---
+      duration_ms: 0.043917
+      type: 'test'
+      ...
+    # Subtest: **/generated/** matches src/generated/x.ts
+    ok 3 - **/generated/** matches src/generated/x.ts
+      ---
+      duration_ms: 0.090625
+      type: 'test'
+      ...
+    # Subtest: **/vendor/** matches packages/vendor/deep/lib.js
+    ok 4 - **/vendor/** matches packages/vendor/deep/lib.js
+      ---
+      duration_ms: 0.050416
+      type: 'test'
+      ...
+    # Subtest: *.gen.ts matches schema.gen.ts
+    ok 5 - *.gen.ts matches schema.gen.ts
+      ---
+      duration_ms: 0.041875
+      type: 'test'
+      ...
+    # Subtest: *.gen.ts rejects a/schema.gen.ts
+    ok 6 - *.gen.ts rejects a/schema.gen.ts
+      ---
+      duration_ms: 0.045959
+      type: 'test'
+      ...
+    # Subtest: src/*.test.ts matches src/a.test.ts
+    ok 7 - src/*.test.ts matches src/a.test.ts
+      ---
+      duration_ms: 0.072709
+      type: 'test'
+      ...
+    # Subtest: src/*.test.ts rejects src/deep/a.test.ts
+    ok 8 - src/*.test.ts rejects src/deep/a.test.ts
+      ---
+      duration_ms: 46.924875
+      type: 'test'
+      ...
+    # Subtest: ?.ts matches x.ts
+    ok 9 - ?.ts matches x.ts
+      ---
+      duration_ms: 0.259917
+      type: 'test'
+      ...
+    # Subtest: ?.ts rejects xy.ts
+    ok 10 - ?.ts rejects xy.ts
+      ---
+      duration_ms: 0.107334
+      type: 'test'
+      ...
+    1..10
+ok 13 - compileExclude
+  ---
+  duration_ms: 48.09775
+  type: 'suite'
+  ...
+1..13
+# tests 112
+# suites 13
+# pass 112
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4388.426625

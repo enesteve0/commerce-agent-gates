@@ -1,0 +1,16 @@
+{
+  "tool": "commerce-agent-gates",
+  "version": "2.0.0",
+  "root": "fixtures/pass",
+  "filesScanned": 9,
+  "notices": [],
+  "findings": [],
+  "summary": {
+    "findings": 0,
+    "checks": {
+      "no-mock-data-in-production": 0,
+      "mutating-routes-must-be-guarded": 0,
+      "queries-must-be-tenant-scoped": 0
+    }
+  }
+}

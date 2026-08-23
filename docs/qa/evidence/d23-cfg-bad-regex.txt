@@ -1,0 +1,1 @@
+error: queries-must-be-tenant-scoped.scopePattern is not a valid regular expression: Invalid regular expression: /tenantId(unterminated/: Unterminated group

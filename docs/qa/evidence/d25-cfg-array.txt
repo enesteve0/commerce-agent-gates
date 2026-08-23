@@ -1,0 +1,1 @@
+error: /tmp/opencode/gates-e2e/cfg/commerce-agent-gates.config.json must contain a JSON object

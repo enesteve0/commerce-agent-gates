@@ -1,0 +1,5 @@
+PASS  no-mock-data-in-production
+PASS  mutating-routes-must-be-guarded
+PASS  queries-must-be-tenant-scoped
+
+✓ 3 checks passed (9 files scanned)

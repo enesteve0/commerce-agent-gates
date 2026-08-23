@@ -1,0 +1,3 @@
+no-mock-data-in-production       Exactly one module resolves the demo/mock flag and refuses in production; demo credentials are verified, never recognised by prefix.
+mutating-routes-must-be-guarded  Every exported POST/PUT/PATCH/DELETE in an App Router route file must pass through an identity-establishing wrapper that is genuinely imported.
+queries-must-be-tenant-scoped    Inside route handlers, database reads and writes must scope to the session tenant (OWASP API1: BOLA) or carry an explicit exemption with a reason.

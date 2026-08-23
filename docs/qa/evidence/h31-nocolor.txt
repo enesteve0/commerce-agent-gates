@@ -1,0 +1,20 @@
+^DFAIL  no-mock-data-in-production
+      app/api/webhooks/incoming/route.ts:6:12  trusts a demo credential by shape instead of verifying it
+      lib/demo-mode.ts:1:1  lib/demo-mode.ts does not refuse in production (expected a NODE_ENV, VERCEL_ENV, or import.meta.env.PROD guard)
+      lib/orders-client.ts:2:38  reads demo flag DEMO_MODE directly; resolve it through lib/demo-mode.ts
+      lib/orders-client.ts:5:10  reads demo flag isDemoEnabled directly; resolve it through lib/demo-mode.ts
+      lib/orders-client.ts:8:10  reads demo flag isDemoEnabled directly; resolve it through lib/demo-mode.ts
+      lib/orders-client.ts:9:11  reads demo flag DEMO_MODE directly; resolve it through lib/demo-mode.ts
+      lib/orders-client.ts:10:18  reads demo flag DEMO_MODE directly; resolve it through lib/demo-mode.ts
+      lib/orders-client.ts:10:37  trusts a demo credential by shape instead of verifying it
+FAIL  mutating-routes-must-be-guarded
+      app/api/billing/route.ts:4:1  DELETE is exported without one of withSession, withApiKey, withServiceToken; wrap the handler so identity is established before the body runs
+      app/api/orders/route.ts:4:1  POST is declared as a bare function; use the wrapper form instead (export const POST = withSession(…))
+      app/api/webhooks/incoming/route.ts:4:1  POST is declared as a bare function; use the wrapper form instead (export const POST = withSession(…))
+FAIL  queries-must-be-tenant-scoped
+      app/api/billing/route.ts:6:9  db.invoice.deleteMany is not scoped to the session tenant
+      app/api/health/route.ts:3:63  db.tenant.count is not scoped to the session tenant
+      app/api/orders/route.ts:6:23  db.order.update is not scoped to the session tenant
+      app/api/webhooks/incoming/route.ts:8:9  db.webhookEvent.create is not scoped to the session tenant
+
+✖ 15 findings across 3 checks (10 files scanned)

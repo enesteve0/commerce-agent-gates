@@ -1,0 +1,1 @@
+error: /tmp/opencode/gates-e2e/cfg/commerce-agent-gates.config.json: checks.queries-must-be-tenant-scoped.exemptions[0].reason must state why this file is exempt; a bare path rots into a list nobody agreed to

@@ -1,0 +1,25 @@
+commerce-agent-gates — three build checks encoding mistakes coding agents make
+
+Usage:
+  commerce-agent-gates [options] [paths...]
+
+Paths default to the current directory. A commerce-agent-gates.config.json in
+each scanned root is picked up automatically.
+
+Options:
+  --config <file>     read configuration from this file instead of discovery
+  --format <format>   pretty | json | sarif | github        (default: pretty)
+  --only <checkId>    run just these checks                 (repeatable)
+  --skip <checkId>    run everything except these checks    (repeatable)
+  --list              list available checks and exit
+  --allow-empty      exit 0 when no source files are found instead of erroring
+  --no-color          disable coloured output even on a TTY
+  -v, --version       print the version and exit
+  -h, --help          show this help and exit
+
+Check ids:
+  no-mock-data-in-production
+  mutating-routes-must-be-guarded
+  queries-must-be-tenant-scoped
+
+Exit codes: 0 clean, 1 findings, 2 usage/configuration error.

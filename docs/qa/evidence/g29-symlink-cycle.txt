@@ -1,0 +1,3 @@
+[exit ?] PASS  mutating-routes-must-be-guarded
+
+✓ 1 checks passed (1 file scanned)
