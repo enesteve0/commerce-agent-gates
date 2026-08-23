@@ -44,15 +44,15 @@ gerekçesiyle birlikte `NOT APPLICABLE` (uygulanamaz) olarak işaretlenmiştir.
 
 ## 2. Test Ortamı
 
-| Kale                        | Değer                                                                                                                |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Tarih                       | 23.08.2026                                                                                                           |
-| Dal / işlemeler             | `master` @ `fb448ce` başlangıç → `8fb3dae`, `3afdda3` (görev işlemeleri)                                             |
-| Çalışma zamanı              | Node v22.23.2, npm 10.9.8                                                                                            |
-| İşletim sistemi / kabuk     | macOS (darwin), zsh; TTY testleri için `script(1)` ile pty                                                           |
-| Test araçları               | `node --test` gömülü koşucu; ESLint 10.9.0 (`--max-warnings 0`); Prettier 3.9.6; publint 0.3.24                      |
-| Kanıt toplama               | Gerçek ikili çalıştırma (`node bin/commerce-agent-gates.mjs`), ANSI temizlenmiş dökümler `docs/qa/evidence/` altında |
-| Kanıtlardaki gizli bilgiler | Yok (tamamı sentetik fixture ağaçları)                                                                               |
+| Kale                        | Değer                                                                                                                                                            |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tarih                       | 23.08.2026                                                                                                                                                       |
+| Dal / işlemeler             | `master`, başlangıç `fb448ce`; görev geçmişi için `git log fb448ce..HEAD` (biçim kapısı düzeltmesi, boş tarama bildirimi düzeltmesi, QA raporları, denetim turu) |
+| Çalışma zamanı              | Node v22.23.2, npm 10.9.8                                                                                                                                        |
+| İşletim sistemi / kabuk     | macOS (darwin), zsh; TTY testleri için `script(1)` ile pty                                                                                                       |
+| Test araçları               | `node --test` gömülü koşucu; ESLint 10.9.0 (`--max-warnings 0`); Prettier 3.9.6; publint 0.3.24                                                                  |
+| Kanıt toplama               | Gerçek ikili çalıştırma (`node bin/commerce-agent-gates.mjs`), ANSI temizlenmiş dökümler `docs/qa/evidence/` altında                                             |
+| Kanıtlardaki gizli bilgiler | Yok (tamamı sentetik fixture ağaçları)                                                                                                                           |
 
 ## 3. Statik Doğrulama Sonuçları
 
@@ -145,6 +145,11 @@ PASS  queries-must-be-tenant-scoped
 
 Çıkış kodu `0`. Etkileşimli öğe yok (bayraklar aşağıda kapsandı).
 
+- **Erişim:** Herkese açık CLI
+- **Test edilen durumlar:** dolu temiz ağaç; tekrarlı deterministik çalıştırmalar
+- **Çalışma zamanı gözlemleri:** yalnızca stdout, exit 0, not yok
+- **Son durum:** PASS
+
 ### `--format json`
 
 **Kanıt:** [`a02-pass-json.txt`](./evidence/a02-pass-json.txt),
@@ -161,6 +166,11 @@ summary.checks   = { no-mock-data-in-production: 8,
                      queries-must-be-tenant-scoped: 4 }
 ```
 
+- **Erişim:** Herkese açık CLI / betikler
+- **Test edilen durumlar:** temiz + kirli ağaçlar
+- **Çalışma zamanı gözlemleri:** her iki koşuda ayrıştırılabilir JSON; çıkış sırasıyla 0 ve 1
+- **Son durum:** PASS
+
 ### `--format sarif`
 
 **Kanıt:** [`a03-pass-sarif.txt`](./evidence/a03-pass-sarif.txt),
@@ -172,6 +182,11 @@ Geçerli SARIF 2.1.0: `$schema` mevcut, tek run, sürücü kuralları = 3, sonu�
 normalize edilmiş: `https://github.com/enesteve0/commerce-agent-gates`
 (`git+` kalıntısı yok).
 
+- **Erişim:** Herkese açık CLI / kod tarama
+- **Test edilen durumlar:** temiz + kirli ağaçlar
+- **Çalışma zamanı gözlemleri:** her iki koşuda geçerli SARIF 2.1.0
+- **Son durum:** PASS
+
 ### `--format github`
 
 **Kanıt:** [`b08-fail-github.txt`](./evidence/b08-fail-github.txt)
@@ -180,6 +195,11 @@ Her satır kurala uygun iş akışı komutu
 (`::error file=…,line=…,col=…,title=…::message`). Kaçışlama canlı doğrulandı:
 iki nokta `%3A`, virgül `%2C` olarak yazılıyor. Temiz ağaç tek satırsonu
 basıyor (annotation yok).
+
+- **Erişim:** CI annotation akışı
+- **Test edilen durumlar:** temiz (boş) + kirli (15 annotation)
+- **Çalışma zamanı gözlemleri:** kurala uygun iş akışı komutları; kaçışlama doğrulandı
+- **Son durum:** PASS
 
 ### Kirli Ağaç Pretty Raporu
 
@@ -193,6 +213,11 @@ destructure edilmiş env), `.includes("sandbox_")` ve `token.test(/^demo_/)`
 ile önek güveni — buna karşılık `page.tsx` içindeki yorum ve dizgi tuzakları
 doğru biçimde sessiz kalıyor. Çıkış kodu `1`.
 
+- **Erişim:** Herkese açık CLI
+- **Test edilen durumlar:** üç kontrolün aynı anda ihlali; yorum/dizgi tuzakları sessiz
+- **Çalışma zamanı gözlemleri:** exit 1, bulgular stdout'ta, stderr boş
+- **Son durum:** PASS
+
 ### `--list` / `--help` / `--version`
 
 **Kanıt:** [`c09-list.txt`](./evidence/c09-list.txt),
@@ -203,6 +228,11 @@ doğru biçimde sessiz kalıyor. Çıkış kodu `1`.
 hizalarak basar. `--help` kullanım metni, seçenek referansı, kontrol
 kimlikleri ve çıkış kodlarını gösterir. `--version` `2.0.0` yazar. Üçü de `0`
 döner.
+
+- **Erişim:** Herkese açık CLI
+- **Test edilen durumlar:** bilgi yüzeyleri
+- **Çalışma zamanı gözlemleri:** exit 0, yalnızca stdout
+- **Son durum:** PASS
 
 ### Boş Dizin / `--allow-empty` / Var Olmayan Kök
 
@@ -221,6 +251,11 @@ note: …/big: src/huge.ts: skipped, larger than 1048576 bytes
 error: no source files found under …/big. Point at a directory containing source, or pass --allow-empty if that is expected.
 ```
 
+- **Erişim:** Herkese açık CLI
+- **Test edilen durumlar:** boş ağaç, yalnız-atlanan ağaç, var olmayan kök, --allow-empty ile ve onsuz — QA-002 düzeltilmiş hâli dahil
+- **Çalışma zamanı gözlemleri:** stderr'de not + hata eşli çıkışı; çıkış kodları 2/0 korundu
+- **Son durum:** FIXED → VERIFIED → PASS (QA-002)
+
 ### Kullanım Hataları
 
 **Kanıt:** [`d15-bad-flag.txt`](./evidence/d15-bad-flag.txt),
@@ -231,6 +266,11 @@ error: no source files found under …/big. Point at a directory containing sour
 Bilinmeyen seçenek, değersiz `--config`, bilinmeyen `--format` ve `--only` içinde
 bilinmeyen kontrol kimliğinin tamamı hassas mesajlarla `2` döner; bilinmeyen
 biçim kullanım metnini de yeniden basar. Hiçbir yerde stack trace yok.
+
+- **Erişim:** Herkese açık CLI
+- **Test edilen durumlar:** geçersiz bayrak, değersiz seçenek, bilinmeyen biçim değeri, bilinmeyen kontrol kimliği
+- **Çalışma zamanı gözlemleri:** hassas stderr mesajları, stack frame yok
+- **Son durum:** PASS
 
 ### Yapılandırma Hataları (8 varyant)
 
@@ -247,12 +287,22 @@ frame** basar (stderr `   at` için makineyle taranarak doğrulandı).
 error: …/commerce-agent-gates.config.json: checks.queries-must-be-tenant-scoped.exemptions[0].reason must state why this file is exempt; a bare path rots into a list nobody agreed to
 ```
 
+- **Erişim:** Herkese açık CLI
+- **Test edilen durumlar:** sekiz farklı geçersiz yapılandırma durumu
+- **Çalışma zamanı gözlemleri:** her biri exit 2; sıfır stack frame (makineyle savunuldu)
+- **Son durum:** PASS
+
 ### Çok Kökenli Tarama
 
 **Kanıt:** [`e27-multiroot.txt`](./evidence/e27-multiroot.txt)
 
 Tek çağrıda taranan iki kök, bulgularını mutlak kök önekiyle üretir; atıf
 belirsizleşmez; özet her iki kökü toplar.
+
+- **Erişim:** Herkese açık CLI
+- **Test edilen durumlar:** iki kök, kök başına atıf
+- **Çalışma zamanı gözlemleri:** önekli bulgular; beklendiği gibi exit 1
+- **Son durum:** PASS
 
 ### Renk Mantığı
 
@@ -264,12 +314,22 @@ Gerçek pty altında FAIL satırları ANSI kırmızısı taşır (38 kaçış di
 sayıldı); pipe çıktısında hiç yoktur; `NO_COLOR=1` tty'de bile rengi kapatır;
 `--no-color` aynı etkiyi yapar. Belgelenen öncelik sırasının ta kendisi.
 
+- **Erişim:** Genel terminal
+- **Test edilen durumlar:** tty, pipe, NO_COLOR, --no-color
+- **Çalışma zamanı gözlemleri:** ANSI tam olarak tty olup vazgeçmeyen durumlarda
+- **Son durum:** PASS
+
 ### Yürüyücü Sağlamlığı (Sembolik Bağlantı Döngüleri)
 
 **Kanıt:** [`g29-symlink-cycle.txt`](./evidence/g29-symlink-cycle.txt)
 
 Kendine atıf yapan sembolik bağlantı içeren dizin anında sonlanır, bağlanan
 dosyayı bir kez tarar (kanonik yol takibi) ve normal biçimde tamamlanır.
+
+- **Erişim:** Düşmanca dosya sistemi girdisi
+- **Test edilen durumlar:** kendine atıf yapan dizin bağı + bağlı dosya
+- **Çalışma zamanı gözlemleri:** anında sonlanma, bağlı dosyanın tek taraması
+- **Son durum:** PASS
 
 ### Programatik API Eşdeğerliliği
 
@@ -278,6 +338,11 @@ dosyayı bir kez tarar (kanonik yol takibi) ve normal biçimde tamamlanır.
 `runGates({ root: "fixtures/fail" })` sonucunun JSON'a çevrilmiş hâli, CLI'ın
 `--format json` belgesiyle bayt bayt örtüşüyor (15 bulgu, aynı sıra, aynı
 alanlar).
+
+- **Erişim:** Gömülü tüketiciler
+- **Test edilen durumlar:** aynı kök, API ve CLI üzerinden
+- **Çalışma zamanı gözlemleri:** bayt bayt örtüşen JSON serileştirme
+- **Son durum:** PASS
 
 ### Paketlenmiş Tarball Duman Testi
 
@@ -289,6 +354,11 @@ CI'ın işi yerelde yeniden üretildi: `npm pack` → yeni boş proje →
 kontrolleri listeler, sürümünü yazar, temiz ağaçtan geçer (exit 0) ve kirli
 ağaçtan birebir aynı 15 bulguyla başarısız olur (exit 1).
 
+- **Erişim:** İzole projede yayımlanmış artefakt
+- **Test edilen durumlar:** kurulum + temiz ağaç + kirli ağaç
+- **Çalışma zamanı gözlemleri:** sıfır kurulum uyarısı/deprecation; depo ikilisiyle özdeş kararlar
+- **Son durum:** PASS
+
 ### Depo Yapılandırmasıyla Kendi Kendine Tarama
 
 **Kanıt:** [`j34-dogfood-json.txt`](./evidence/j34-dogfood-json.txt),
@@ -298,6 +368,11 @@ Depoyu taramak `commerce-agent-gates.config.json` dosyasını alır (`fixtures/f
 ve `test` hariç tutulur, `flagAuthority` ezilir), 22 dosya tarar ve 0 döner —
 kendi konularını adlandırdığı için belgelenmiş satır içi `gate-exempt`
 direktifi taşıyan `src/checks/no-mock-data-in-production.mjs` dahil.
+
+- **Erişim:** Depo CI kapısı
+- **Test edilen durumlar:** gerçek yapılandırmayla 22 dosyalık öz-tarama
+- **Çalışma zamanı gözlemleri:** exit 0; satır içi muafiyet onurlandırıldı
+- **Son durum:** PASS
 
 ## 7. Tam İşlevsel Kapsam
 
@@ -332,13 +407,19 @@ süreç çıkış kodları, stdout/stderr ayrımı, TTY algısı, her senaryoda 
 temiz sonlanma. Sunucu günlüğü karşılığı = test koşucusunun kendi stderr'i;
 tüm süit boyunca 0 bayt ölçüldü. Beklenmedik uyarı yok.
 
+Performans sinyalleri (§67 karşılığı): 112 testlik süit bir saniyenin altında
+tamamlanıyor; bu deponun 22 dosyasını taramak anlıktır; CLI tasarımı gereği tek
+geçişli ve senkron olduğundan istek şelaleleri, tekrarlayan ağ çağrıları veya
+arayüz kilitlenmeleri yapısal olarak imkânsızdır. Bariz bir performans kusuru
+gözlenmedi, dolayısıyla düzeltilen de olmadı.
+
 ## 11. Bulunan ve Düzeltilen Sorunlar
 
-| ID     | Önem  | Kategori                  | Yüzey/Akış                    | Sorun                                                                                         | Kök Neden                                                                                           | Çözüm                                                                                                                                              | Doğrulama                                                                                               | Son Durum         |
-| ------ | ----- | ------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------- |
-| QA-001 | Orta  | Derleme/Biçimlendirme     | Biçim kapısı                  | `prettier --check .` izlenmemiş görev-prompt markdown'ında başarısız oldu                     | Prettier yoksayılmayan tüm dosyalara bakar, izlenmemişler dahil                                     | Dosya adı `.prettierignore`'a eklendi (kullanıcı onaylı; baytlar korunur)                                                                          | `npm run format` yeniden çalıştırıldı → geçti                                                           | FIXED → VERIFIED  |
-| QA-002 | Orta  | UX/Çalışma zamanı teşhisi | Boş tarama yolu (S10/S11/S17) | `filesScanned === 0` olduğunda büyük-dosya/okunamayan-dizin bildirimleri sessizce yutuluyordu | CLI herhangi bir biçimleyici çalışmadan erken çıkıyor; `result.notices`'ı basan başka bir yol yoktu | `src/cli.mjs` artık exit-2 hatasının ve `--allow-empty` durumunun yanına `note:` satırları basıyor; iki regresyon testi eklendi; CHANGELOG girdisi | Düzeltme sonrası orijinal senaryo yeniden çalıştırıldı: not görünüyor, çıkış kodları aynı; süit 112/112 | FIXED → VERIFIED  |
-| QA-003 | Bilgi | API/Dokümantasyon         | `--format json`               | API sonucundaki `result.configPath` alanı JSON çıktısına serileştirilmiyor                    | Biçimleyici alandan önce yazılmış; 2.x ortasında makine şeması kararlılığı tercih edildi            | Yok (kabul edildi)                                                                                                                                 | Burada belgelendi                                                                                       | EXPECTED BEHAVIOR |
+| ID     | Önem  | Kategori                  | Yüzey/Akış                    | Sorun                                                                                         | Kök Neden                                                                                           | Çözüm                                                                                                                                              | Doğrulama                                                                                                                                                                                                                                                                                                                   | Son Durum         |
+| ------ | ----- | ------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| QA-001 | Orta  | Derleme/Biçimlendirme     | Biçim kapısı                  | `prettier --check .` izlenmemiş görev-prompt markdown'ında başarısız oldu                     | Prettier yoksayılmayan tüm dosyalara bakar, izlenmemişler dahil                                     | Dosya adı `.prettierignore`'a eklendi (kullanıcı onaylı; baytlar korunur)                                                                          | `npm run format` yeniden çalıştırıldı → geçti                                                                                                                                                                                                                                                                               | FIXED → VERIFIED  |
+| QA-002 | Orta  | UX/Çalışma zamanı teşhisi | Boş tarama yolu (S10/S11/S17) | `filesScanned === 0` olduğunda büyük-dosya/okunamayan-dizin bildirimleri sessizce yutuluyordu | CLI herhangi bir biçimleyici çalışmadan erken çıkıyor; `result.notices`'ı basan başka bir yol yoktu | `src/cli.mjs` artık exit-2 hatasının ve `--allow-empty` durumunun yanına `note:` satırları basıyor; iki regresyon testi eklendi; CHANGELOG girdisi | Düzeltme sonrası orijinal senaryo yeniden çalıştırıldı: not görünüyor, çıkış kodları aynı; süit 112/112. Öncesi/sonrası kanıtı: [`issues/QA-002-before.txt`](./evidence/issues/QA-002-before.txt) / [`issues/QA-002-after.txt`](./evidence/issues/QA-002-after.txt) (düzeltme öncesi ikili `3afdda3^`'den yeniden üretildi) | FIXED → VERIFIED  |
+| QA-003 | Bilgi | API/Dokümantasyon         | `--format json`               | API sonucundaki `result.configPath` alanı JSON çıktısına serileştirilmiyor                    | Biçimleyici alandan önce yazılmış; 2.x ortasında makine şeması kararlılığı tercih edildi            | Yok (kabul edildi)                                                                                                                                 | Burada belgelendi                                                                                                                                                                                                                                                                                                           | EXPECTED BEHAVIOR |
 
 Görev sırasında eklenen regresyon kapsamı: `test/cli.test.mjs` —
 "explains skipped files when nothing scannable remains" ve "surfaces notices on

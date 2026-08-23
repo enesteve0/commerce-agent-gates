@@ -41,15 +41,15 @@ marked `NOT APPLICABLE` with justification in the coverage ledger.
 
 ## 2. Environment
 
-| Item                | Value                                                                                                         |
-| ------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Date                | 2026-08-23                                                                                                    |
-| Branch / commits    | `master` @ `fb448ce` baseline → `8fb3dae`, `3afdda3` (mission commits)                                        |
-| Runtime             | Node v22.23.2, npm 10.9.8                                                                                     |
-| OS / shell          | macOS (darwin), zsh; pty via `script(1)` for TTY tests                                                        |
-| Test tooling        | `node --test` built-in runner; ESLint 10.9.0 (`--max-warnings 0`); Prettier 3.9.6; publint 0.3.24             |
-| Evidence capture    | Real binary spawns (`node bin/commerce-agent-gates.mjs`), ANSI-stripped transcripts under `docs/qa/evidence/` |
-| Secrets in evidence | None (all synthetic fixture trees)                                                                            |
+| Item                | Value                                                                                                                                           |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Date                | 2026-08-23                                                                                                                                      |
+| Branch / commits    | `master`, baseline `fb448ce`; mission history via `git log fb448ce..HEAD` (format-gate fix, empty-scan notice fix, QA reports, audit follow-up) |
+| Runtime             | Node v22.23.2, npm 10.9.8                                                                                                                       |
+| OS / shell          | macOS (darwin), zsh; pty via `script(1)` for TTY tests                                                                                          |
+| Test tooling        | `node --test` built-in runner; ESLint 10.9.0 (`--max-warnings 0`); Prettier 3.9.6; publint 0.3.24                                               |
+| Evidence capture    | Real binary spawns (`node bin/commerce-agent-gates.mjs`), ANSI-stripped transcripts under `docs/qa/evidence/`                                   |
+| Secrets in evidence | None (all synthetic fixture trees)                                                                                                              |
 
 ## 3. Static Verification Results
 
@@ -124,8 +124,8 @@ Windows host exists here; Node 24 execution is covered by the CI matrix
 
 ### Default Scan — Pretty Format (Clean Tree)
 
-**Invocation:** `commerce-agent-gates fixtures/pass`
-**Access:** n/a (CLI) · **Evidence:** [`a01-pass-pretty.txt`](./evidence/a01-pass-pretty.txt)
+**Invocation:** `commerce-agent-gates fixtures/pass` ·
+**Evidence:** [`a01-pass-pretty.txt`](./evidence/a01-pass-pretty.txt)
 
 Prints one `PASS <check-id>` line per check, then a green summary line with file
 count. Output is deterministic (sorted discovery, stable ordering).
@@ -139,6 +139,11 @@ PASS  queries-must-be-tenant-scoped
 ```
 
 Exit code `0`. Interactive elements: none beyond flags (covered below).
+
+- **Access:** Public CLI
+- **States tested:** populated clean tree; deterministic repeat runs
+- **Runtime observations:** stdout only, exit 0, no notes
+- **Final status:** PASS
 
 ### `--format json`
 
@@ -156,6 +161,11 @@ summary.checks   = { no-mock-data-in-production: 8,
                      queries-must-be-tenant-scoped: 4 }
 ```
 
+- **Access:** Public CLI / scripts
+- **States tested:** clean + dirty trees
+- **Runtime observations:** stdout parseable JSON both runs; exits 0 and 1 respectively
+- **Final status:** PASS
+
 ### `--format sarif`
 
 **Evidence:** [`a03-pass-sarif.txt`](./evidence/a03-pass-sarif.txt),
@@ -166,6 +176,11 @@ with `level: "error"` and `physicalLocation.region.startLine/startColumn` set.
 `informationUri` is normalised to
 `https://github.com/enesteve0/commerce-agent-gates` (no `git+` residue).
 
+- **Access:** Public CLI / code scanning
+- **States tested:** clean + dirty trees
+- **Runtime observations:** valid SARIF 2.1.0 both runs
+- **Final status:** PASS
+
 ### `--format github`
 
 **Evidence:** [`b08-fail-github.txt`](./evidence/b08-fail-github.txt)
@@ -174,6 +189,11 @@ Every line is a well-formed workflow command
 (`::error file=…,line=…,col=…,title=…::message`). Property escaping verified
 live: colons render as `%3A`, commas as `%2C`. Clean tree emits a single
 newline (no annotations).
+
+- **Access:** Public CI annotation stream
+- **States tested:** clean (empty) + dirty (15 annotations)
+- **Runtime observations:** well-formed workflow commands; escaping verified
+- **Final status:** PASS
 
 ### Dirty-Tree Pretty Report
 
@@ -187,6 +207,11 @@ destructured env), prefix-trust via `.includes("sandbox_")` and
 `token.test(/^demo_/)` — while comment decoys and string decoys in `page.tsx`
 correctly stay silent. Exit code `1`.
 
+- **Access:** Public CLI
+- **States tested:** all three checks failing simultaneously; comment/string decoys silent
+- **Runtime observations:** exit 1, findings on stderr-free stdout
+- **Final status:** PASS
+
 ### `--list` / `--help` / `--version`
 
 **Evidence:** [`c09-list.txt`](./evidence/c09-list.txt),
@@ -196,6 +221,11 @@ correctly stay silent. Exit code `1`.
 `--list` prints three ids aligned with one-line descriptions from check
 metadata. `--help` prints usage, option reference, check ids, exit codes.
 `--version` prints `2.0.0`. All exit `0`.
+
+- **Access:** Public CLI
+- **States tested:** informational surfaces
+- **Runtime observations:** exit 0, stdout only
+- **Final status:** PASS
 
 ### Empty Directory / `--allow-empty` / Missing Root
 
@@ -214,6 +244,11 @@ note: …/big: src/huge.ts: skipped, larger than 1048576 bytes
 error: no source files found under …/big. Point at a directory containing source, or pass --allow-empty if that is expected.
 ```
 
+- **Access:** Public CLI
+- **States tested:** empty tree, skipped-only tree, missing root, with and without --allow-empty — includes the QA-002 corrected state
+- **Runtime observations:** note + error pairing on stderr; exit codes 2/0 preserved
+- **Final status:** FIXED → VERIFIED → PASS (QA-002)
+
 ### Usage Errors
 
 **Evidence:** [`d15-bad-flag.txt`](./evidence/d15-bad-flag.txt),
@@ -224,6 +259,11 @@ error: no source files found under …/big. Point at a directory containing sour
 Unknown option, missing `--config` value, unknown `--format`, and an unknown
 check id in `--only` all exit `2` with precise messages; unknown format also
 reprints usage. No stack traces anywhere.
+
+- **Access:** Public CLI
+- **States tested:** invalid flag, missing value, unknown format value, unknown check id
+- **Runtime observations:** precise stderr messages, no stack frames
+- **Final status:** PASS
 
 ### Configuration Errors (8 variants)
 
@@ -240,12 +280,22 @@ frames** (asserted mechanically by grepping stderr for `   at`).
 error: …/commerce-agent-gates.config.json: checks.queries-must-be-tenant-scoped.exemptions[0].reason must state why this file is exempt; a bare path rots into a list nobody agreed to
 ```
 
+- **Access:** Public CLI
+- **States tested:** eight distinct invalid-configuration states
+- **Runtime observations:** exit 2 each; zero stack frames (mechanically asserted)
+- **Final status:** PASS
+
 ### Multi-Root Scanning
 
 **Evidence:** [`e27-multiroot.txt`](./evidence/e27-multiroot.txt)
 
 Two roots scanned in one invocation produce findings prefixed with their
 absolute root so attribution stays unambiguous; summary aggregates both.
+
+- **Access:** Public CLI
+- **States tested:** two roots, per-root attribution
+- **Runtime observations:** prefixed findings; exit 1 as expected
+- **Final status:** PASS
 
 ### Colour Logic
 
@@ -257,12 +307,22 @@ Under a real pty the FAIL lines carry ANSI red (38 escape sequences counted);
 piped output has none; `NO_COLOR=1` disables colour even on a tty; `--no-color`
 does likewise. Exactly the documented precedence.
 
+- **Access:** Public terminal
+- **States tested:** tty, pipe, NO_COLOR, --no-color
+- **Runtime observations:** ANSI present exactly when a tty is present without opt-outs
+- **Final status:** PASS
+
 ### Walker Robustness (Symlink Cycles)
 
 **Evidence:** [`g29-symlink-cycle.txt`](./evidence/g29-symlink-cycle.txt)
 
 A directory containing a self-referential symlink terminates immediately,
 scans the linked file once (canonical-path tracking), and completes normally.
+
+- **Access:** Hostile filesystem input
+- **States tested:** self-referential directory symlink plus linked file
+- **Runtime observations:** immediate termination, single scan of linked file
+- **Final status:** PASS
 
 ### Programmatic API Equivalence
 
@@ -271,6 +331,11 @@ scans the linked file once (canonical-path tracking), and completes normally.
 `runGates({ root: "fixtures/fail" })` produces a structured result whose JSON
 serialisation is byte-identical to the CLI's `--format json` document
 (15 findings, same ordering, same fields).
+
+- **Access:** Embedding consumers
+- **States tested:** same root via API and CLI
+- **Runtime observations:** byte-identical JSON serialisation
+- **Final status:** PASS
 
 ### Packed-Tarball Smoke Test
 
@@ -282,6 +347,11 @@ Reproduced CI's job locally: `npm pack` → fresh scratch project → `npm insta
 reports its version, passes the clean tree (exit 0) and fails the dirty tree
 with the identical 15 findings (exit 1).
 
+- **Access:** Published artefact in isolated project
+- **States tested:** install + clean tree + dirty tree
+- **Runtime observations:** zero install warnings/deprecations; identical verdicts to repo binary
+- **Final status:** PASS
+
 ### Self-Dogfood With Repository Config
 
 **Evidence:** [`j34-dogfood-json.txt`](./evidence/j34-dogfood-json.txt),
@@ -292,6 +362,11 @@ Scanning the repository itself picks up `commerce-agent-gates.config.json`
 and exits 0 — including `src/checks/no-mock-data-in-production.mjs`, which
 carries the documented inline `gate-exempt` directive for naming its own
 subjects.
+
+- **Access:** Repository CI gate
+- **States tested:** 22-file self-scan under real config
+- **Runtime observations:** exit 0; inline exemption honoured
+- **Final status:** PASS
 
 ## 7. Complete Functional Coverage
 
@@ -326,13 +401,19 @@ codes, stdout/stderr separation, TTY detection, and signal-free termination on
 every scenario. Server logs equivalent = the test runner's own stderr, measured
 at 0 bytes across the full suite. No unexpected warnings anywhere.
 
+Performance signals (the §67 analogue): the 112-test suite completes in well
+under a second; scanning this repository's 22 files is instantaneous; the CLI
+is single-pass and synchronous by design, so request waterfalls, repeated
+network calls, or UI freezes are structurally impossible. No obvious
+performance defects observed, and none fixed.
+
 ## 11. Issues Found and Fixed
 
-| ID     | Severity      | Category               | Page/Flow                     | Problem                                                                                     | Root Cause                                                                           | Fix                                                                                                                                           | Verification                                                                                 | Final Status      |
-| ------ | ------------- | ---------------------- | ----------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------- |
-| QA-001 | Medium        | Build/Formatting       | Format gate                   | `prettier --check .` failed on the untracked mission-prompt markdown                        | Prettier walks all non-ignored files, including untracked ones                       | Added the filename to `.prettierignore` (user-approved; preserves bytes)                                                                      | Re-ran `npm run format` → pass                                                               | FIXED → VERIFIED  |
-| QA-002 | Medium        | UX/Runtime diagnostics | Empty-scan path (S10/S11/S17) | Oversized-file/unreadable-directory notices were silently dropped when `filesScanned === 0` | CLI early-exits before any formatter runs, and nothing else printed `result.notices` | `src/cli.mjs` now prints `note:` lines alongside the exit-2 error and the `--allow-empty` status; two regression tests added; CHANGELOG entry | Original failing scenario re-run post-fix: note visible, exit codes unchanged; suite 112/112 | FIXED → VERIFIED  |
-| QA-003 | Informational | API/Documentation      | `--format json`               | `result.configPath` exists on the API result but is not serialised into JSON output         | Formatter predates the field; machine-schema stability preferred mid-2.x             | None (accepted)                                                                                                                               | Documented here                                                                              | EXPECTED BEHAVIOR |
+| ID     | Severity      | Category               | Page/Flow                     | Problem                                                                                     | Root Cause                                                                           | Fix                                                                                                                                           | Verification                                                                                                                                                                                                                                                                                         | Final Status      |
+| ------ | ------------- | ---------------------- | ----------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| QA-001 | Medium        | Build/Formatting       | Format gate                   | `prettier --check .` failed on the untracked mission-prompt markdown                        | Prettier walks all non-ignored files, including untracked ones                       | Added the filename to `.prettierignore` (user-approved; preserves bytes)                                                                      | Re-ran `npm run format` → pass                                                                                                                                                                                                                                                                       | FIXED → VERIFIED  |
+| QA-002 | Medium        | UX/Runtime diagnostics | Empty-scan path (S10/S11/S17) | Oversized-file/unreadable-directory notices were silently dropped when `filesScanned === 0` | CLI early-exits before any formatter runs, and nothing else printed `result.notices` | `src/cli.mjs` now prints `note:` lines alongside the exit-2 error and the `--allow-empty` status; two regression tests added; CHANGELOG entry | Original failing scenario re-run post-fix: note visible, exit codes unchanged; suite 112/112. Before/after evidence: [`issues/QA-002-before.txt`](./evidence/issues/QA-002-before.txt) / [`issues/QA-002-after.txt`](./evidence/issues/QA-002-after.txt) (pre-fix binary reproduced from `3afdda3^`) | FIXED → VERIFIED  |
+| QA-003 | Informational | API/Documentation      | `--format json`               | `result.configPath` exists on the API result but is not serialised into JSON output         | Formatter predates the field; machine-schema stability preferred mid-2.x             | None (accepted)                                                                                                                               | Documented here                                                                                                                                                                                                                                                                                      | EXPECTED BEHAVIOR |
 
 Regression coverage added during the mission: `test/cli.test.mjs` —
 "explains skipped files when nothing scannable remains" and "surfaces notices
