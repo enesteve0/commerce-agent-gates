@@ -79,13 +79,18 @@ export function main(argv, io = process) {
     });
 
     if (result.filesScanned === 0) {
+      // Nothing was scanned, so no formatter will ever run and these notices
+      // would vanish. A skipped-oversized-file or unreadable-directory notice
+      // is exactly the explanation the user needs alongside the outcome.
+      const sink = parsed.allowEmpty ? io.stdout : io.stderr;
+      for (const notice of result.notices) sink.write(`note: ${notice}\n`);
       if (!parsed.allowEmpty) {
         io.stderr.write(
           `error: no source files found under ${result.root}. Point at a directory containing source, or pass --allow-empty if that is expected.\n`,
         );
         return 2;
       }
-      io.stdout.write(`no source files under ${result.root}; nothing to check\n`);
+      sink.write(`no source files under ${result.root}; nothing to check\n`);
       return 0;
     }
 

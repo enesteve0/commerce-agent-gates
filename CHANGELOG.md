@@ -4,6 +4,15 @@ All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning follows [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+
+### Fixed
+
+- Empty scans no longer swallow walker notices: when every source file is
+  skipped (for example, a file over the 1 MiB cap) or a directory is
+  unreadable, the `note:` lines now accompany the "no source files found"
+  error (and the `--allow-empty` status) instead of vanishing.
+
 ## [2.0.0] — 2026-08-22
 
 Complete overhaul of detection precision, configurability, reporting, testing,

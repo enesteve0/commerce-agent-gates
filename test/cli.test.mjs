@@ -89,6 +89,22 @@ describe("cli", () => {
     assert.match(out, /nothing to check/);
   });
 
+  it("explains skipped files when nothing scannable remains", () => {
+    const dir = project({ "src/huge.ts": "x".repeat(1024 * 1024 + 1) });
+    const { code, err } = capture([dir]);
+    assert.equal(code, 2);
+    assert.match(err, /note: \S+: src\/huge\.ts: skipped, larger than/);
+    assert.match(err, /no source files found/);
+  });
+
+  it("surfaces notices on an allowed empty scan without failing", () => {
+    const dir = project({ "src/huge.ts": "x".repeat(1024 * 1024 + 1) });
+    const { code, out } = capture([dir, "--allow-empty"]);
+    assert.equal(code, 0);
+    assert.match(out, /note: \S+: src\/huge\.ts: skipped, larger than/);
+    assert.match(out, /nothing to check/);
+  });
+
   it("emits parseable JSON", () => {
     const dir = project({
       "lib/demo-mode.ts": CLEAN_AUTHORITY,
