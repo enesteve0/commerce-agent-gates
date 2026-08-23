@@ -508,7 +508,7 @@ only. Completing those locally would require those platforms to be provisioned.
 | Format                      | `prettier --check .`                       | PASS   |
 | Unit/integration tests      | `npm test` — 112/112, no skips             | PASS   |
 | Packaging                   | publint + packed-tarball smoke             | PASS   |
-| Live product                | 22-surface ledger, 41 evidence transcripts | PASS   |
+| Live product                | 22-surface ledger, 43 evidence transcripts | PASS   |
 | Self-dogfood                | gates on this repo                         | PASS   |
 | Warnings (static + runtime) | actionable project-owned count             | **0**  |
 

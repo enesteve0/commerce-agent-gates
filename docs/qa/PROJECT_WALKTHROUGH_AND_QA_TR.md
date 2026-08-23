@@ -515,7 +515,7 @@ gerektirir.
 | Biçim                              | `prettier --check .`                  | PASS  |
 | Birim/entegrasyon testleri         | `npm test` — 112/112, atlama yok      | PASS  |
 | Paketleme                          | publint + tarball duman testi         | PASS  |
-| Canlı ürün                         | 22 yüzeylik defter, 41 kanıt dökümü   | PASS  |
+| Canlı ürün                         | 22 yüzeylik defter, 43 kanıt dökümü   | PASS  |
 | Kendini kapıdan geçirme            | bu depo üzerinde kapılar              | PASS  |
 | Uyarılar (statik + çalışma zamanı) | proje kaynaklı düzeltilebilir sayı    | **0** |
 
