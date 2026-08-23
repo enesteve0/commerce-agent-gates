@@ -32,7 +32,7 @@ gerekçesiyle birlikte `NOT APPLICABLE` (uygulanamaz) olarak işaretlenmiştir.
 - **Nihai durum**: tüm statik kapılar soğuk çalıştırmadan geçiyor; canlı
   senaryoların tamamı sözleşmeye uygun; bilinen hiçbir proje kaynaklı
   düzeltilebilir hata veya uyarı kalmadı.
-- **Envanterlenen yüzey**: 19 (16'sı canlı test edildi, 2'si platform/birim
+- **Envanterlenen yüzey**: 22 (19'u canlı test edildi, 2'si platform/birim
   test kapsamıyla belgelendi, 1'i kabul edilmiş gözlem).
 - **Bulunan kusur**: 3 (QA-001 biçimlendirme kapısı hatası; QA-002 boş taramada
   yürüyücü bildirimlerinin yutulması; QA-003 bilgi amaçlı JSON şeması gözlemi).
@@ -58,17 +58,19 @@ gerekçesiyle birlikte `NOT APPLICABLE` (uygulanamaz) olarak işaretlenmiştir.
 
 Son kod değişikliğinden sonra sıfırdan yeniden çalıştırılan temiz boru hattı:
 
-| Kontrol                 | Komut                                 | Sonuç                                                           |
-| ----------------------- | ------------------------------------- | --------------------------------------------------------------- |
-| Bağımlılık ağacı        | `npm ls`                              | Temiz — 4 devDependency, fazladan/eksik paket yok               |
-| Lockfile tutarlılığı    | `npm ci --dry-run`                    | `package.json` ile tutarlı                                      |
-| Güvenlik açıkları       | `npm audit`                           | 0 güvenlik açığı                                                |
-| Güncellik               | `npm outdated`                        | Güncel olmayan paket yok                                        |
-| Lint                    | `eslint . --max-warnings 0`           | Geçti, **sıfır uyarı**                                          |
-| Biçimlendirme           | `prettier --check .`                  | Geçti                                                           |
-| Testler                 | `npm test`                            | **112/112 geçti**, 13 süit, 0 atlanan, 0 todo, stderr'de 0 bayt |
-| Paketleme               | `npx publint`                         | Sorun yok                                                       |
-| Kendini kapıdan geçirme | `node bin/commerce-agent-gates.mjs .` | Exit 0 — kapılar kendi deposundan da geçiyor                    |
+| Kontrol                     | Komut                                                                                                                 | Sonuç                                                           |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Bağımlılık ağacı            | `npm ls`                                                                                                              | Temiz — 4 devDependency, fazladan/eksik paket yok               |
+| Lockfile tutarlılığı        | `npm ci --dry-run`                                                                                                    | `package.json` ile tutarlı                                      |
+| Güvenlik açıkları           | `npm audit`                                                                                                           | 0 güvenlik açığı                                                |
+| Güncellik                   | `npm outdated`                                                                                                        | Güncel olmayan paket yok                                        |
+| Lint                        | `eslint . --max-warnings 0`                                                                                           | Geçti, **sıfır uyarı**                                          |
+| Biçimlendirme               | `prettier --check .`                                                                                                  | Geçti                                                           |
+| TypeScript                  | uygulanamaz — araç JSDoc'lu düz ESM JavaScript'tir; `tsconfig`, `typescript` bağımlılığı veya typecheck betiği yoktur | NOT APPLICABLE                                                  |
+| Derleme/paketleme derlemesi | uygulanamaz — derleme ya da paketleme adımı yok; paketleme hattı (publint + tarball) derleme kapısı görevini görür    | PASS (bkz. S19)                                                 |
+| Testler                     | `npm test`                                                                                                            | **112/112 geçti**, 13 süit, 0 atlanan, 0 todo, stderr'de 0 bayt |
+| Paketleme                   | `npx publint`                                                                                                         | Sorun yok                                                       |
+| Kendini kapıdan geçirme     | `node bin/commerce-agent-gates.mjs .`                                                                                 | Exit 0 — kapılar kendi deposundan da geçiyor                    |
 
 Kanıtlar: `evidence/l37-final-tests.txt` (tam süit günlüğü),
 `evidence/l38-final-dogfood.txt` (kendi kendine tarama).
@@ -115,6 +117,9 @@ yapılandırma dosyasının kendisi.
 | S17 | Yürüyücü sağlamlığı: büyük dosya bildirimi, sembolik bağlantı döngüleri          | PASS (S10 düzeltmesi) |
 | S18 | Programatik API eşdeğerliliği (`runGates()` ↔ CLI JSON)                          | PASS                  |
 | S19 | Paketlenmiş tarball kurulum duman testi                                          | PASS                  |
+| S20 | Geçerli özel yapılandırma uyumu (guards/clients/scope/authority)                 | PASS                  |
+| S21 | Çıktı determinizmi (bayt bayt özdeş tekrarlı çalışmalar)                         | PASS                  |
+| S22 | Programatik API uç sözleşmesi (`root: []`, `--only ∩ --skip`)                    | PASS                  |
 
 CLI aracı için uygulanamaz (gerekçeli): sayfa ekran görüntüleri, responsive
 düzenler, formlar/CRUD, kimlik doğrulama/roller, tarayıcı konsolu/ağ, DOM
@@ -374,6 +379,53 @@ direktifi taşıyan `src/checks/no-mock-data-in-production.mjs` dahil.
 - **Çalışma zamanı gözlemleri:** exit 0; satır içi muafiyet onurlandırıldı
 - **Son durum:** PASS
 
+### Özel Yapılandırma Uyumu
+
+**Çağrı:** her varsayılanı yeniden adlandıran yapılandırmaya sahip sentetik
+bir proje taraması · **Kanıt:** [`m39-custom-config.txt`](./evidence/m39-custom-config.txt)
+
+`guards: ["requireUser"]`, `clients: ["prisma"]`, özel `organizationId` kapsam
+deseni ve `flagAuthority: "src/mock.ts"` ile yapılandırılmış canlı bir ağaç,
+tespiti sabitlerin değil yapılandırmanın yönettiğini kanıtladı: korumasız
+route `requireUser` diyor (varsayılanları değil), yetki talebi `src/mock.ts`
+dosyasına taşındı ve özel desenle kapsanan Prisma sorgusu, varsayılan
+seçeneklerde başarısız olacağı hâlde doğru biçimde geçti.
+
+- **Erişim:** Herkese açık CLI + yapılandırma dosyası
+- **Test edilen durumlar:** yeniden adlandırılmış guard'lar, yeniden
+  adlandırılmış istemci, alternatif kapsam regex'i, taşınan bayrak yetkisi
+- **Çalışma zamanı gözlemleri:** iki isabetli bulguyla exit 1; özel desene
+  uygun sorgu beklendiği gibi sessiz
+- **Son durum:** PASS
+
+### Çıktı Determinizmi
+
+**Kanıt:** [`m40-determinism-a.txt`](./evidence/m40-determinism-a.txt) /
+[`m41-determinism-b.txt`](./evidence/m41-determinism-b.txt)
+
+Art arda iki tam kirli-ağaç çalıştırması bayt bayt özdeş dökümler üretti
+(`cmp` temiz); determinizm sorusu iddia yerine kanıtla kapandı.
+
+- **Erişim:** Herkese açık CLI · **Test edilen durumlar:** tekrarlı özdeş çağrılar
+- **Çalışma zamanı gözlemleri:** çalışmalar arasında bayt bayt özdeş stdout
+- **Son durum:** PASS
+
+### Programatik API Uç Sözleşmesi
+
+**Kanıt:** [`test/index.test.mjs`](../../test/index.test.mjs) (4 kalıcı
+regresyon testi, süit toplamı 116)
+
+CLI üzerinden ulaşılamayan yalnızca-API hata yolları artık testlerle
+kilitlendi: `runGates({ root: [] })` ve `--only ∩ --skip` ile sıfıra inen
+seçim, eyleme geçirilebilir mesajlarla `ConfigError` fırlatır; yapılandırılmış
+temiz-ağaç sonuç şekli ve kural başına sayaçlar her iki fixture ağacına karşı
+savunulur.
+
+- **Erişim:** Gömülü tüketiciler · **Test edilen durumlar:** geçersiz kök
+  listesi, boşalan seçim, temiz sonuç şekli, konum değişmezleriyle kirli sayaçlar
+- **Çalışma zamanı gözlemleri:** dört test de yeşil; dışarı stack trace sızmıyor
+- **Son durum:** PASS
+
 ## 7. Tam İşlevsel Kapsam
 
 | Davranış                                                                 | Test edildi             | Sonuç |
@@ -463,7 +515,7 @@ gerektirir.
 | Biçim                              | `prettier --check .`                  | PASS  |
 | Birim/entegrasyon testleri         | `npm test` — 112/112, atlama yok      | PASS  |
 | Paketleme                          | publint + tarball duman testi         | PASS  |
-| Canlı ürün                         | 19 yüzeylik defter, 38 kanıt dökümü   | PASS  |
+| Canlı ürün                         | 22 yüzeylik defter, 41 kanıt dökümü   | PASS  |
 | Kendini kapıdan geçirme            | bu depo üzerinde kapılar              | PASS  |
 | Uyarılar (statik + çalışma zamanı) | proje kaynaklı düzeltilebilir sayı    | **0** |
 

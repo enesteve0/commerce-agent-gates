@@ -29,7 +29,7 @@ marked `NOT APPLICABLE` with justification in the coverage ledger.
   the packed-tarball installation path that CI uses.
 - **Final status**: all static gates pass from a cold run; all live scenarios
   behave per contract; zero known actionable project-owned errors or warnings.
-- **Surfaces inventoried**: 19 (16 exercised live, 2 covered by platform/unit
+- **Surfaces inventoried**: 22 (19 exercised live, 2 covered by platform/unit
   constraints as documented, 1 accepted observation).
 - **Defects found**: 3 (QA-001 formatting gate failure; QA-002 swallowed walker
   notices on empty scans; QA-003 informational observation on JSON schema).
@@ -55,17 +55,19 @@ marked `NOT APPLICABLE` with justification in the coverage ledger.
 
 Final clean pipeline, re-run from scratch after the last code change:
 
-| Check                | Command                               | Result                                                            |
-| -------------------- | ------------------------------------- | ----------------------------------------------------------------- |
-| Dependency tree      | `npm ls`                              | Clean — 4 devDependencies, no extraneous/missing                  |
-| Lockfile consistency | `npm ci --dry-run`                    | Consistent with `package.json`                                    |
-| Vulnerabilities      | `npm audit`                           | 0 vulnerabilities                                                 |
-| Freshness            | `npm outdated`                        | Nothing outdated                                                  |
-| Lint                 | `eslint . --max-warnings 0`           | Pass, **zero warnings**                                           |
-| Formatting           | `prettier --check .`                  | Pass                                                              |
-| Tests                | `npm test`                            | **112/112 pass**, 13 suites, 0 skipped, 0 todo, 0 bytes on stderr |
-| Packaging            | `npx publint`                         | All good                                                          |
-| Self-dogfood         | `node bin/commerce-agent-gates.mjs .` | Exit 0 — the gates pass on their own repository                   |
+| Check                | Command                                                                                                                  | Result                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Dependency tree      | `npm ls`                                                                                                                 | Clean — 4 devDependencies, no extraneous/missing                  |
+| Lockfile consistency | `npm ci --dry-run`                                                                                                       | Consistent with `package.json`                                    |
+| Vulnerabilities      | `npm audit`                                                                                                              | 0 vulnerabilities                                                 |
+| Freshness            | `npm outdated`                                                                                                           | Nothing outdated                                                  |
+| Lint                 | `eslint . --max-warnings 0`                                                                                              | Pass, **zero warnings**                                           |
+| Formatting           | `prettier --check .`                                                                                                     | Pass                                                              |
+| TypeScript           | n/a — the tool is plain ESM JavaScript with JSDoc; no `tsconfig`, no `typescript` dependency, no typecheck script exists | NOT APPLICABLE                                                    |
+| Build/compilation    | n/a — no compile or bundling step exists; the packaging pipeline (publint + packed tarball) serves as the build gate     | PASS (see S19)                                                    |
+| Tests                | `npm test`                                                                                                               | **112/112 pass**, 13 suites, 0 skipped, 0 todo, 0 bytes on stderr |
+| Packaging            | `npx publint`                                                                                                            | All good                                                          |
+| Self-dogfood         | `node bin/commerce-agent-gates.mjs .`                                                                                    | Exit 0 — the gates pass on their own repository                   |
 
 Evidence: `evidence/l37-final-tests.txt` (full suite log),
 `evidence/l38-final-dogfood.txt` (self-scan).
@@ -91,27 +93,30 @@ directives, and the config file itself.
 
 ## 5. Complete Surface Inventory
 
-| #   | Surface                                                              | Ledger state          |
-| --- | -------------------------------------------------------------------- | --------------------- |
-| S1  | Default scan, pretty format, clean tree                              | PASS                  |
-| S2  | `--format json`, clean + dirty                                       | PASS                  |
-| S3  | `--format sarif`, clean + dirty                                      | PASS                  |
-| S4  | `--format github`, clean + dirty                                     | PASS                  |
-| S5  | Dirty-tree pretty report with positions                              | PASS                  |
-| S6  | `--list`                                                             | PASS                  |
-| S7  | `--help`                                                             | PASS                  |
-| S8  | `--version`                                                          | PASS                  |
-| S9  | Exit-code contract (0 clean / 1 findings / 2 usage-config)           | PASS                  |
-| S10 | Empty directory scan                                                 | FIXED → PASS (QA-002) |
-| S11 | `--allow-empty`                                                      | FIXED → PASS (QA-002) |
-| S12 | Nonexistent root path                                                | PASS                  |
-| S13 | Unknown flag / missing flag value / unknown format / bad `--only` id | PASS                  |
-| S14 | Configuration error paths (8 variants)                               | PASS                  |
-| S15 | Multi-root scanning with per-root attribution                        | PASS                  |
-| S16 | Colour logic: TTY / pipe / `NO_COLOR` / `--no-color`                 | PASS                  |
-| S17 | Walker robustness: oversized file notice, symlink cycles             | PASS (S10 fix)        |
-| S18 | Programmatic API equivalence (`runGates()` vs CLI JSON)              | PASS                  |
-| S19 | Packed-tarball install smoke test                                    | PASS                  |
+| #   | Surface                                                                | Ledger state          |
+| --- | ---------------------------------------------------------------------- | --------------------- |
+| S1  | Default scan, pretty format, clean tree                                | PASS                  |
+| S2  | `--format json`, clean + dirty                                         | PASS                  |
+| S3  | `--format sarif`, clean + dirty                                        | PASS                  |
+| S4  | `--format github`, clean + dirty                                       | PASS                  |
+| S5  | Dirty-tree pretty report with positions                                | PASS                  |
+| S6  | `--list`                                                               | PASS                  |
+| S7  | `--help`                                                               | PASS                  |
+| S8  | `--version`                                                            | PASS                  |
+| S9  | Exit-code contract (0 clean / 1 findings / 2 usage-config)             | PASS                  |
+| S10 | Empty directory scan                                                   | FIXED → PASS (QA-002) |
+| S11 | `--allow-empty`                                                        | FIXED → PASS (QA-002) |
+| S12 | Nonexistent root path                                                  | PASS                  |
+| S13 | Unknown flag / missing flag value / unknown format / bad `--only` id   | PASS                  |
+| S14 | Configuration error paths (8 variants)                                 | PASS                  |
+| S15 | Multi-root scanning with per-root attribution                          | PASS                  |
+| S16 | Colour logic: TTY / pipe / `NO_COLOR` / `--no-color`                   | PASS                  |
+| S17 | Walker robustness: oversized file notice, symlink cycles               | PASS (S10 fix)        |
+| S18 | Programmatic API equivalence (`runGates()` vs CLI JSON)                | PASS                  |
+| S19 | Packed-tarball install smoke test                                      | PASS                  |
+| S20 | Valid custom configuration adaptation (guards/clients/scope/authority) | PASS                  |
+| S21 | Output determinism (byte-identical repeated runs)                      | PASS                  |
+| S22 | Programmatic API edge contract (`root: []`, `--only ∩ --skip`)         | PASS                  |
 
 Not applicable to a CLI tool (justified): page screenshots, responsive layouts,
 forms/CRUD, authentication/roles, browser console/network, accessibility DOM
@@ -368,6 +373,54 @@ subjects.
 - **Runtime observations:** exit 0; inline exemption honoured
 - **Final status:** PASS
 
+### Custom Configuration Adaptation
+
+**Invocation:** scan of a synthetic project whose config renames every
+default · **Evidence:** [`m39-custom-config.txt`](./evidence/m39-custom-config.txt)
+
+A live tree configured with `guards: ["requireUser"]`, `clients: ["prisma"]`,
+a custom `organizationId` scope pattern, and `flagAuthority: "src/mock.ts"`
+proved that configuration — not constants — drives detection: the unguarded
+route names `requireUser` (not the defaults), the authority demand moved to
+`src/mock.ts`, and a Prisma query scoped through the custom pattern correctly
+passes where default options would have failed it.
+
+- **Access:** Public CLI + config file
+- **States tested:** renamed guards, renamed client, alternate scope regex,
+  relocated flag authority
+- **Runtime observations:** exit 1 with two accurate findings; custom-scoped
+  query silent as intended
+- **Final status:** PASS
+
+### Output Determinism
+
+**Evidence:** [`m40-determinism-a.txt`](./evidence/m40-determinism-a.txt) /
+[`m41-determinism-b.txt`](./evidence/m41-determinism-b.txt)
+
+Two consecutive full dirty-tree runs produced byte-identical transcripts
+(`cmp` clean), closing the §sorting/determinism question with proof rather
+than assertion.
+
+- **Access:** Public CLI · **States tested:** repeated identical invocations
+- **Runtime observations:** byte-identical stdout across runs
+- **Final status:** PASS
+
+### Programmatic API Edge Contract
+
+**Evidence:** [`test/index.test.mjs`](../../test/index.test.mjs) (4 permanent
+regression tests, suite total 116)
+
+The API-only error paths unreachable through the CLI are now locked by tests:
+`runGates({ root: [] })` and an `--only ∩ --skip` selection emptied to zero
+checks both raise `ConfigError` with actionable messages; the structured
+clean-tree result shape and per-rule tallies are asserted against both fixture
+trees.
+
+- **Access:** Embedding consumers · **States tested:** invalid root list,
+  emptied selection, clean result shape, dirty tallies with position invariants
+- **Runtime observations:** all four tests green; no stack traces escape
+- **Final status:** PASS
+
 ## 7. Complete Functional Coverage
 
 | Control / behaviour                                                       | Tested                   | Result |
@@ -455,7 +508,7 @@ only. Completing those locally would require those platforms to be provisioned.
 | Format                      | `prettier --check .`                       | PASS   |
 | Unit/integration tests      | `npm test` — 112/112, no skips             | PASS   |
 | Packaging                   | publint + packed-tarball smoke             | PASS   |
-| Live product                | 19-surface ledger, 38 evidence transcripts | PASS   |
+| Live product                | 22-surface ledger, 41 evidence transcripts | PASS   |
 | Self-dogfood                | gates on this repo                         | PASS   |
 | Warnings (static + runtime) | actionable project-owned count             | **0**  |
 

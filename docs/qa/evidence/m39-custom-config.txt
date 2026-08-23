@@ -1,0 +1,7 @@
+FAIL  no-mock-data-in-production
+      src/mock.ts:1:1  src/mock.ts does not refuse in production (expected a NODE_ENV, VERCEL_ENV, or import.meta.env.PROD guard)
+FAIL  mutating-routes-must-be-guarded
+      src/api/route.ts:1:1  POST is exported without one of requireUser; wrap the handler so identity is established before the body runs
+PASS  queries-must-be-tenant-scoped
+
+✖ 2 findings across 2 checks (3 files scanned)
