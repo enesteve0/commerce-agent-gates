@@ -161,6 +161,17 @@ npx commerce-agent-gates path/to/src                     # v2
 
 Constants became config keys (see the table above); the hardcoded exemption map became config exemptions and inline directives; findings now carry line/column and machine-readable formats exist. Node 18 and 20 have reached end-of-life upstream, so v2 requires Node 22+.
 
+## Documentation
+
+Detailed architecture, check specifications, invariants, and agent operating instructions live in the [`docs/`](./docs) directory:
+
+- [**Documentation Hub & Index**](./docs/README.md) — Master navigation map and source of truth.
+- [**Agent Onboarding (`docs/agent/START_HERE.md`)**](./docs/agent/START_HERE.md) — Fast mental model and context routing for AI coding agents.
+- [**Architecture & Scanner Internals**](./docs/architecture/SYSTEM_OVERVIEW.md) — Pipeline diagrams, module boundaries, and lexer mechanics.
+- [**Check Specifications**](./docs/checks/README.md) — Detailed domain rules and failure modes for each check.
+- [**Testing & Fixtures Strategy**](./docs/testing/TESTING_STRATEGY.md) — Multi-tier testing, case tables, and fixture contracts.
+- [**Architecture Decision Records (ADRs)**](./docs/adr/README.md) — Historical architectural decisions (0001–0005).
+
 ## Licence
 
 MIT.

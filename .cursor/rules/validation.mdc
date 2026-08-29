@@ -1,0 +1,15 @@
+---
+description: Verification requirements before concluding work
+globs: **/*
+---
+
+# Universal Quality Verification
+
+Before completing any task, execute this verification pipeline:
+
+```bash
+npm run lint          # ESLint clean (0 warnings)
+npm run format        # Prettier clean
+npm test              # All 14 test suites pass
+node bin/commerce-agent-gates.mjs .   # Self-dogfooding passes with exit code 0
+```
