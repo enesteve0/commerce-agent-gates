@@ -2,5 +2,3 @@ node_modules/
 fixtures/
 coverage/
 package-lock.json
-universal-exhaustive-qa-e2e-verification-master-prompt.md
-universal-agentic-repository-documentation-master-prompt.md

@@ -1,1 +1,0 @@
-no source files under /tmp/opencode/gates-e2e/empty; nothing to check

@@ -1,7 +1,7 @@
 {
   "name": "commerce-agent-gates",
-  "version": "2.0.0",
-  "description": "Three build checks that encode mistakes coding agents make and careful humans don't.",
+  "version": "2.0.1",
+  "description": "Three checks for Next.js App Router projects that catch mistakes coding agents make.",
   "type": "module",
   "license": "MIT",
   "engines": {

@@ -1,7 +1,7 @@
 /**
  * The registry. Selection is the product: three checks, each justified by an
  * observed agent failure mode. New checks are added only when a failure mode
- * earns its place — see docs/ARCHITECTURE.md for the contract a check must
+ * earns its place; see docs/ARCHITECTURE.md for the contract a check must
  * satisfy and the tests it must bring with it.
  */
 

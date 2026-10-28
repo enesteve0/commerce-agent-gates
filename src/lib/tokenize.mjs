@@ -2,7 +2,7 @@
  * Offset-preserving masking scanner for JavaScript and TypeScript source.
  *
  * Every check matches patterns against code, not raw text. The naive
- * approach — strip comments and strings with a chain of regexes — has known
+ * approach (strip comments and strings with a chain of regexes) has known
  * failure classes: stripping block comments before strings corrupts string
  * literals that contain "/*", line-comment heuristics misfire on URLs and on
  * "//" inside template literals, and a regex literal is indistinguishable
@@ -18,7 +18,7 @@
  *   literal. Literal-aware rules (a demo credential recognised by its prefix,
  *   an environment variable read dynamically) match against raw text and use
  *   the spans to ignore anything living inside a comment while still seeing
- *   string contents — which is exactly where the interesting literals live.
+ *   string contents, which is exactly where the interesting literals live.
  *
  * Handled constructs: line comments; multi-line block comments; quoted
  * strings with escapes; template literals with ${ … } interpolated code

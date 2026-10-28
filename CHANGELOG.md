@@ -6,6 +6,19 @@ versioning follows [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-10-29
+
+### Changed
+
+- The README is rewritten and shorter. Install and run straight from GitHub
+  (`npx github:enesteve0/commerce-agent-gates`), since the package isn't on
+  npm yet; the old `npx commerce-agent-gates` lines failed.
+- Removed generated material that didn't help readers: the agent-instruction
+  files for other tools, the prompt files, `docs/agent`, `docs/qa` and the
+  planning documents. `AGENTS.md` is now one short page. The check pages,
+  architecture notes and ADRs stay.
+- The CI and release workflows run by hand from the Actions tab.
+
 ### Fixed
 
 - Empty scans no longer swallow walker notices: when every source file is
@@ -13,7 +26,7 @@ versioning follows [Semantic Versioning](https://semver.org).
   unreadable, the `note:` lines now accompany the "no source files found"
   error (and the `--allow-empty` status) instead of vanishing.
 
-## [2.0.0] — 2026-08-22
+## [2.0.0] - 2026-08-22
 
 Complete overhaul of detection precision, configurability, reporting, testing,
 and packaging. Breaking changes are listed first.
@@ -39,7 +52,7 @@ and packaging. Breaking changes are listed first.
 ### Added
 
 - Findings carry 1-based `line:column` positions everywhere.
-- Output formats: `--format pretty|json|sarif|github` — SARIF 2.1.0 for
+- Output formats: `--format pretty|json|sarif|github`: SARIF 2.1.0 for
   GitHub code scanning, workflow-command annotations for inline PR comments.
 - CLI surface: `--config`, `--only`, `--skip`, `--list`, `--allow-empty`,
   `--no-color`, `--help`, `--version`; documented exit codes 0/1/2.

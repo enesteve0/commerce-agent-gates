@@ -1,6 +1,6 @@
 /**
  * The tree-level contract the original test.mjs enforced, kept honest under
- * node:test: every check passes the clean tree and fails the dirty one — and
+ * node:test: every check passes the clean tree and fails the dirty one, and
  * fails it for the right reason.
  *
  * A check that only ever passes is decoration. These fixtures are also the

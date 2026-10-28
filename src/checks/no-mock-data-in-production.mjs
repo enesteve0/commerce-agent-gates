@@ -5,9 +5,9 @@
  * gates it behind a flag, and the feature works. Months later the flag is
  * read in nine files, one of them ships, and a customer sees invented orders.
  *
- * The mistake is never the mock. It's that reading the flag spread out. So
- * the rule is not "don't use mocks" — it's that exactly one module is allowed
- * to decide whether mocks are on, and it must refuse in production. The same
+ * Mocks are fine. What goes wrong is that reading the flag spreads. So the
+ * rule says exactly one module is allowed to decide whether mocks are on, and
+ * that module must refuse in production. The same
  * instinct covers credentials: a demo token gets verified like any other, or
  * rejected. Nothing is trusted because of how it looks.
  */

@@ -27,7 +27,7 @@ describe("queries-must-be-tenant-scoped", () => {
     assert.deepEqual(check(route(body), defaults), []);
   });
 
-  it("flags a query scoped from the request body — the confused deputy", () => {
+  it("flags a query scoped from the request body (the confused deputy)", () => {
     const body = [
       "export async function POST(request: Request) {",
       "  const body = await request.json();",

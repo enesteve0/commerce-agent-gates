@@ -1,8 +1,8 @@
 name: release
 
+# Runs by hand from the Actions tab.
 on:
-  push:
-    tags: ["v*"]
+  workflow_dispatch:
 
 jobs:
   publish:

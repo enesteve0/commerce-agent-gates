@@ -1,7 +1,7 @@
 /**
  * Configuration: discovery, validation, merging.
  *
- * The tool works with no configuration file at all — the defaults encode the
+ * The tool works with no configuration file at all: the defaults encode the
  * constants that used to live at the top of each check. A
  * commerce-agent-gates.config.json at the target root (or an explicit
  * --config path) overrides individual values without forking anything.

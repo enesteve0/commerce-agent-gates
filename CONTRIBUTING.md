@@ -19,8 +19,9 @@ npm test           # node:test, no configuration needed
 | `npm run format`                      | Prettier check (`format:fix` to write)         |
 | `node bin/commerce-agent-gates.mjs .` | dogfood the gates on this repository           |
 
-CI runs all of the above on Node 22 and 24, plus a packed-tarball smoke test
-and the dogfood step. A PR that fails any of them is not reviewable.
+The CI workflow runs all of the above on Node 22 and 24, plus a packed-tarball
+smoke test. It runs by hand from the Actions tab. A PR that fails any of them
+is not reviewable.
 
 ## Ground rules
 
@@ -31,7 +32,7 @@ and the dogfood step. A PR that fails any of them is not reviewable.
    near-misses, fixture coverage in both trees, and a README section written
    in the voice of the existing three.
 3. **Findings carry positions.** Any new detection must report
-   `file:line:column`, derived through `src/lib/tokenize.mjs` helpers — never
+   `file:line:column`, derived through `src/lib/tokenize.mjs` helpers, never
    by counting lines with bespoke code.
 4. **No silent failures.** Unreadable input, skipped files, empty scans: every
    path either succeeds verifiably or reports why not.
@@ -57,8 +58,8 @@ Maintainers only:
 
 1. Update `CHANGELOG.md` under a new version heading.
 2. Bump `version` in `package.json`.
-3. Tag `v<version>` and push the tag; the release workflow publishes to npm
-   with provenance after tests pass.
+3. Run the release workflow from the Actions tab; it publishes to npm with
+   provenance after tests pass.
 
 ## Licence
 

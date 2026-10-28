@@ -26,7 +26,7 @@ embedding consumers get identical behaviour by construction.
 - Traversal is sorted; output order never depends on filesystem internals.
 - Paths are normalised to posix separators immediately. On Windows,
   `path.relative()` produces backslashes, which would make every route-file
-  regex silently fail — a gate that passes everything is worse than one that
+  regex silently fail, and a gate that passes everything is worse than one that
   crashes.
 - Symbolic links resolve once and are tracked by canonical path, so cycles
   cannot recurse forever.
@@ -38,8 +38,8 @@ embedding consumers get identical behaviour by construction.
 
 ## The masking scanner (`src/lib/tokenize.mjs`)
 
-Every check matches patterns against _code_, not raw text. The v1 approach —
-strip comments and strings with chained regexes — had known failure classes:
+Every check matches patterns against _code_, not raw text. The v1 approach
+(strip comments and strings with chained regexes) had known failure classes:
 
 1. block comments stripped before strings corrupted string literals that
    contained `/*`;
@@ -49,10 +49,10 @@ strip comments and strings with chained regexes — had known failure classes:
 
 The replacement is a single-pass scanner producing two coordinated views:
 
-- **masked** — same length as the source, non-code regions blanked to spaces,
+- **masked**: same length as the source, non-code regions blanked to spaces,
   newlines preserved. Structural matching runs here, and any index in it maps
   to exact `line:column` through `positionAt()`.
-- **spans** — classified non-code regions (comment / string / regex literal).
+- **spans**: classified non-code regions (comment / string / regex literal).
   Literal-aware rules match raw text and use spans to ignore comments while
   still seeing string contents, which is where interesting literals live.
 
@@ -101,7 +101,7 @@ Defaults live beside the logic that consumes them (`meta.defaultOptions`) so a
 check and its configuration surface cannot drift apart. Validation is strict:
 unknown keys anywhere are errors listing valid alternatives, types are
 inferred from defaults, exemption entries demand a written reason, and invalid
-regexes fail at load time as `ConfigError` — printed without a stack trace,
+regexes fail at load time as `ConfigError`, printed without a stack trace,
 because a bad config is user input, not a crash.
 
 Inline exemptions complement config-file ones: a `gate-exempt(reason)` marker
@@ -123,11 +123,11 @@ workflow-command escaping for properties and data.
   expectations, including the corruption cases that motivated the scanner.
 - **Check case tables** (`test/checks/*.test.mjs`): must-catch and must-pass
   snippets per rule, including near-misses designed to tempt false positives.
-- **Fixture contract** (`test/fixtures.test.mjs`): tree-level integration —
+- **Fixture contract** (`test/fixtures.test.mjs`): tree-level integration:
   every check passes `fixtures/pass` and fails `fixtures/fail` for named
   reasons. This is the contract inherited from v1's `test.mjs`.
 - **CLI integration** (`test/cli.test.mjs`): spawned behaviour via `main()`
-  against temporary trees — exit codes, formats parse, annotations are
+  against temporary trees: exit codes, formats parse, annotations are
   well-formed, config errors surface cleanly.
 
 CI additionally packs the tarball, installs it into a scratch project, and

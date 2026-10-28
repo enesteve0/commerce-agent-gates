@@ -1,5 +1,0 @@
-FAIL  mutating-routes-must-be-guarded
-      /tmp/opencode/gates-e2e/rootA/app/api/x/route.ts:1:1  POST is exported without one of withSession, withApiKey, withServiceToken; wrap the handler so identity is established before the body runs
-      /tmp/opencode/gates-e2e/rootB/app/api/y/route.ts:1:1  DELETE is exported without one of withSession, withApiKey, withServiceToken; wrap the handler so identity is established before the body runs
-
-✖ 2 findings across 1 check (2 files scanned)

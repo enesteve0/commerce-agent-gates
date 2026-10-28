@@ -1,1 +1,0 @@
-error: no source files found under /tmp/opencode/gates-e2e/nonexistent. Point at a directory containing source, or pass --allow-empty if that is expected.

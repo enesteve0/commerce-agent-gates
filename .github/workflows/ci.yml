@@ -1,9 +1,8 @@
 name: ci
 
+# Runs by hand from the Actions tab (no push or pull_request triggers).
 on:
-  push:
-    branches: [master, main]
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   verify:
@@ -30,7 +29,7 @@ jobs:
       - name: test
         run: npm test
 
-      - name: dogfood — the gates gate this repository
+      - name: run the gates on this repository
         run: node bin/commerce-agent-gates.mjs .
 
       - name: package hygiene

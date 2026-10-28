@@ -3,7 +3,7 @@ import js from "@eslint/js";
 /**
  * The gates dogfood themselves on every push (see the ci workflow), so ESLint
  * here covers ordinary code health: correctness foot-guns, unused bindings,
- * accidental globals. Fixtures are excluded deliberately — they exist to
+ * accidental globals. Fixtures are excluded on purpose: they exist to
  * contain violations, and linting them would defeat their purpose.
  */
 export default [

@@ -68,7 +68,7 @@ export function formatJson(result, { version = "unknown" } = {}) {
   );
 }
 
-/** SARIF 2.1.0 — see https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html */
+/** SARIF 2.1.0, see https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html */
 export function formatSarif(result, { version = "unknown", informationUri = "" } = {}) {
   return JSON.stringify(
     {

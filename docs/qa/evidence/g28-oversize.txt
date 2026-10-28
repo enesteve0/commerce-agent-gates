@@ -1,2 +1,0 @@
-note: /tmp/opencode/gates-e2e/big: src/huge.ts: skipped, larger than 1048576 bytes
-error: no source files found under /tmp/opencode/gates-e2e/big. Point at a directory containing source, or pass --allow-empty if that is expected.

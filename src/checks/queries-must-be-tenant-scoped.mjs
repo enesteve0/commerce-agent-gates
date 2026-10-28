@@ -2,7 +2,7 @@
  * Agent failure mode: the confused deputy.
  *
  * This is the one that scares people. An authenticated request arrives, the
- * handler is correctly wrapped, the caller is who they say they are — and the
+ * handler is correctly wrapped, the caller is who they say they are, and the
  * query still reads every tenant's rows, because the id came from the request
  * body instead of the session.
  *

@@ -1,1 +1,0 @@
-error: config file not found: /tmp/opencode/gates-e2e/does-not-exist.json

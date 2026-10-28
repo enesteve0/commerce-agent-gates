@@ -4,7 +4,7 @@
  * into an exit code CI can gate on.
  *
  * Exit codes:
- *   0  clean — no findings
+ *   0  clean, no findings
  *   1  findings reported
  *   2  usage or configuration error (including scanning a directory that
  *      contains no source files; see --allow-empty)
@@ -19,7 +19,7 @@ import { runGates } from "./index.mjs";
 
 const FORMATS = ["pretty", "json", "sarif", "github"];
 
-const USAGE = `commerce-agent-gates — three build checks encoding mistakes coding agents make
+const USAGE = `commerce-agent-gates: three checks for mistakes coding agents make
 
 Usage:
   commerce-agent-gates [options] [paths...]

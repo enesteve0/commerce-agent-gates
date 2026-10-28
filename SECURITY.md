@@ -11,7 +11,7 @@ of the code it scans, and has zero runtime dependencies.
 Not a security product. Passing these gates does not mean code is secure; it
 means three specific failure modes are absent from the text that was scanned.
 The checks are heuristic by design, and a determined mistake can evade them.
-See the README's "What these are not" section for the honest scope.
+See the README's Limits section for the honest scope.
 
 ## Reporting a vulnerability
 
