@@ -2,7 +2,7 @@
 
 Three checks for Next.js App Router projects that catch mistakes coding agents make over and over.
 
-We're building [FaStart](https://fastart.co), an online store platform, and a lot of our code is written by coding agents working from specs. They're fast. They also repeat a few specific mistakes that look right, pass review and are wrong. Nothing merges at FaStart until it passes our own repository checks, and these are three of them, pulled out of our codebase so any App Router project can run them.
+We're building [FaStart](https://fastart.co), an online store platform, and a lot of our code is written by coding agents working from specs. They're fast. They also repeat a few specific mistakes that look right, pass review and are wrong. We wrote our own checks for those mistakes, and these are three of them, pulled out of our codebase so any App Router project can run them.
 
 ## Try it
 
